@@ -280,6 +280,13 @@ def build_site_json(contributions, expenditures, lookup, metadata):
         primary = group[0]
         committee_names = [g["committee_name"] for g in group]
 
+        # DC vs out-of-DC breakdown
+        dc_total = 0
+        out_of_dc_total = 0
+        if not c.empty and "State" in c.columns:
+            dc_total = round(c[c["State"] == "DC"]["amount_clean"].sum(), 2)
+            out_of_dc_total = round(c[c["State"] != "DC"]["amount_clean"].sum(), 2)
+
         committees.append({
             "committee_name": ", ".join(committee_names),
             "candidate_name": primary["candidate_name"],
@@ -293,6 +300,8 @@ def build_site_json(contributions, expenditures, lookup, metadata):
             "num_expenditures": len(e),
             "avg_contribution": round(c["amount_clean"].mean(), 2) if not c.empty else 0,
             "max_contribution": round(c["amount_clean"].max(), 2) if not c.empty else 0,
+            "dc_contributions": dc_total,
+            "out_of_dc_contributions": out_of_dc_total,
             "top_donors": top_donors,
             "spending_by_purpose": spending,
         })
@@ -323,33 +332,104 @@ def build_site_json(contributions, expenditures, lookup, metadata):
             })
         print(f"  FEC candidates: {len(fec_candidates)}")
 
-    # Load Fair Elections data if available
+    # Load Fair Elections data: payment totals + individual contributions
     fe_path = os.path.join(RAW_DIR, "fair_elections.json")
+    fe_contrib_path = os.path.join(RAW_DIR, "fair_elections_contributions.csv")
+    fe_expend_path = os.path.join(RAW_DIR, "fair_elections_expenditures.csv")
+
     fe_candidates = []
     if os.path.exists(fe_path):
         with open(fe_path) as f:
             fe_raw = json.load(f)
+
+        # Load contribution-level data if available
+        fe_contrib = pd.DataFrame()
+        if os.path.exists(fe_contrib_path):
+            fe_contrib = pd.read_csv(fe_contrib_path, dtype=str)
+            fe_contrib["amount"] = pd.to_numeric(fe_contrib["amount"], errors="coerce").fillna(0)
+
+        fe_expend = pd.DataFrame()
+        if os.path.exists(fe_expend_path):
+            fe_expend = pd.read_csv(fe_expend_path, dtype=str)
+            fe_expend["amount"] = pd.to_numeric(fe_expend["amount"], errors="coerce").fillna(0)
+
         for fc in fe_raw:
+            committee = fc.get("committee_name") or fc.get("committee", "")
+            candidate = fc.get("candidate_name") or fc.get("name", "")
+
+            # Match contributions by candidate name
+            # CSV format is "Aparna Raj (Council Ward 1)" while JSON is "Aparna Raj"
+            c = pd.DataFrame()
+            e = pd.DataFrame()
+            if not fe_contrib.empty and "candidate" in fe_contrib.columns:
+                c = fe_contrib[fe_contrib["candidate"].str.startswith(candidate, na=False)]
+            if not fe_expend.empty and "candidate" in fe_expend.columns:
+                e = fe_expend[fe_expend["candidate"].str.startswith(candidate, na=False)]
+
+            # Separate public funds from individual contributions
+            top_donors = []
+            dc_total = 0
+            out_of_dc_total = 0
+            individual_raised = 0
+            public_funds = 0
+            num_individual_donors = 0
+            if not c.empty:
+                # Split by contribution type
+                is_public = c["contribution_type"].str.contains("Public Funds", na=False)
+                is_individual = c["contribution_type"].str.contains("Individual", na=False)
+                is_candidate = c["contribution_type"].str.contains("Candidate", na=False)
+
+                public_funds = round(c[is_public]["amount"].sum(), 2)
+                individuals = c[is_individual | is_candidate]
+                individual_raised = round(individuals["amount"].sum(), 2)
+                num_individual_donors = len(individuals)
+
+                # Top 5 individual donors (exclude public funds)
+                if not individuals.empty:
+                    ind = individuals.copy()
+                    ind["donor"] = (ind["first_name"].fillna("") + " " + ind["last_name"].fillna("")).str.strip()
+                    ind = ind[ind["donor"] != ""]
+                    top5 = ind.groupby("donor")["amount"].sum().sort_values(ascending=False).head(5)
+                    top_donors = [{"name": n, "total": round(v, 2)} for n, v in top5.items()]
+
+                # DC vs out-of-DC (individual contributions only)
+                dc_total = round(individuals[individuals["state"] == "DC"]["amount"].sum(), 2)
+                out_of_dc_total = round(individuals[individuals["state"] != "DC"]["amount"].sum(), 2)
+
+            # Spending by purpose
+            spending = []
+            if not e.empty and "purpose" in e.columns:
+                purposes = e.groupby("purpose")["amount"].sum().sort_values(ascending=False)
+                spending = [{"purpose": p, "total": round(v, 2)} for p, v in purposes.head(5).items()]
+
+            base = fc.get("base_payment") or fc.get("base_paid", 0)
+            matching = fc.get("matching_payment") or fc.get("matching_paid", 0)
+            total_paid = fc.get("total_paid", 0)
+
             fe_candidates.append({
-                "committee_name": fc.get("committee_name") or fc.get("committee", ""),
-                "candidate_name": fc.get("candidate_name") or fc.get("name", ""),
+                "committee_name": committee,
+                "candidate_name": candidate,
                 "office": fc.get("office", ""),
                 "party": fc.get("party", ""),
                 "committee_id": fc.get("committee_id") or fc.get("committee_code", ""),
                 "filer_type": "Fair Elections",
                 "certification_status": fc.get("certification_status", ""),
-                "total_raised": fc.get("total_paid", 0),
-                "total_spent": 0,
-                "base_payment": fc.get("base_payment") or fc.get("base_paid", 0),
-                "matching_payment": fc.get("matching_payment") or fc.get("matching_paid", 0),
-                "num_contributions": 0,
-                "num_expenditures": 0,
-                "avg_contribution": 0,
-                "max_contribution": 0,
-                "top_donors": [],
-                "spending_by_purpose": [],
+                "total_raised": float(total_paid) if total_paid else 0,
+                "total_spent": round(e["amount"].sum(), 2) if not e.empty else 0,
+                "base_payment": float(base) if base else 0,
+                "matching_payment": float(matching) if matching else 0,
+                "individual_raised": individual_raised,
+                "public_funds": public_funds,
+                "num_individual_donors": num_individual_donors,
+                "num_contributions": len(c),
+                "num_expenditures": len(e),
+                "dc_contributions": dc_total,
+                "out_of_dc_contributions": out_of_dc_total,
+                "top_donors": top_donors,
+                "spending_by_purpose": spending,
             })
-        print(f"  Fair Elections candidates: {len(fe_candidates)}")
+        print(f"  Fair Elections candidates: {len(fe_candidates)} "
+              f"({len(fe_contrib):,} contributions, {len(fe_expend):,} expenditures)")
 
     all_entries = committees + fec_candidates + fe_candidates
     site_data = {

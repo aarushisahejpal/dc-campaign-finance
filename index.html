@@ -417,20 +417,72 @@
 
             // Build detail section based on source
             let detailHTML = '';
+
+            // DC vs Out-of-DC bar (shown for all sources that have it)
+            const dcAmt = c.dc_contributions || 0;
+            const outAmt = c.out_of_dc_contributions || 0;
+            const geoTotal = dcAmt + outAmt;
+            const dcPctGeo = geoTotal > 0 ? (dcAmt / geoTotal * 100).toFixed(0) : 0;
+            const geoBar = geoTotal > 0 ? `
+                <div class="detail-section" style="grid-column: 1 / -1">
+                    <h4>Where contributions come from</h4>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                        <div style="flex:1;height:14px;border-radius:3px;overflow:hidden;display:flex;background:#f0f0f0">
+                            <div style="width:${dcPctGeo}%;background:#1a56db;border-radius:3px 0 0 3px"></div>
+                            <div style="width:${100-dcPctGeo}%;background:#94a3b8"></div>
+                        </div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#555">
+                        <span>DC: ${fmtFull(dcAmt)} (${dcPctGeo}%)</span>
+                        <span>Outside DC: ${fmtFull(outAmt)} (${100-dcPctGeo}%)</span>
+                    </div>
+                </div>
+            ` : '';
+
+            // Top donors (shown for OCF traditional and Fair Elections)
+            const donorList = (c.top_donors || []).length > 0 ? `
+                <div class="detail-section">
+                    <h4>Top Individual Donors</h4>
+                    <ul class="detail-list">
+                        ${c.top_donors.map(d => `
+                            <li><span class="name">${d.name}</span><span class="amt">${fmtFull(d.total)}</span></li>
+                        `).join('')}
+                    </ul>
+                </div>
+            ` : '';
+
+            // Spending (shown for all with data)
+            const spendList = (c.spending_by_purpose || []).length > 0 ? `
+                <div class="detail-section">
+                    <h4>Spending</h4>
+                    <ul class="detail-list">
+                        ${c.spending_by_purpose.slice(0, 5).map(s => `
+                            <li><span class="name">${s.purpose}</span><span class="amt">${fmtFull(s.total)}</span></li>
+                        `).join('')}
+                    </ul>
+                </div>
+            ` : '';
+
             if (c.filer_type === 'Fair Elections') {
                 const base = c.base_payment || 0;
                 const matching = c.matching_payment || 0;
+                const indiv = c.individual_raised || 0;
+                const pub = c.public_funds || 0;
+                const numDonors = c.num_individual_donors || 0;
                 const status = c.certification_status || '';
                 detailHTML = `
                     <div class="detail-section">
-                        <h4>Fair Elections Public Financing</h4>
+                        <h4>Money In</h4>
                         <ul class="detail-list">
-                            <li><span class="name">Certification</span><span class="amt">${status}</span></li>
-                            <li><span class="name">Base payment</span><span class="amt">${fmtFull(base)}</span></li>
-                            <li><span class="name">Matching funds (5:1)</span><span class="amt">${fmtFull(matching)}</span></li>
-                            <li><span class="name"><strong>Total public funds</strong></span><span class="amt"><strong>${fmtFull(c.total_raised)}</strong></span></li>
+                            <li><span class="name">Individual contributions (${numDonors.toLocaleString()} donors)</span><span class="amt">${fmtFull(indiv)}</span></li>
+                            <li><span class="name">Public financing — base payment</span><span class="amt">${fmtFull(base)}</span></li>
+                            <li><span class="name">Public financing — 5:1 match</span><span class="amt">${fmtFull(matching)}</span></li>
+                            <li><span class="name">Certification: ${status}</span><span class="amt"></span></li>
                         </ul>
                     </div>
+                    ${donorList}
+                    ${geoBar}
+                    ${spendList}
                 `;
             } else if (c.filer_type === 'FEC') {
                 const coh = c.cash_on_hand || 0;
@@ -446,22 +498,9 @@
                 `;
             } else {
                 detailHTML = `
-                    <div class="detail-section">
-                        <h4>Top Donors</h4>
-                        <ul class="detail-list">
-                            ${(c.top_donors || []).map(d => `
-                                <li><span class="name">${d.name}</span><span class="amt">${fmtFull(d.total)}</span></li>
-                            `).join('') || '<li><span class="name">No contributions reported</span></li>'}
-                        </ul>
-                    </div>
-                    <div class="detail-section">
-                        <h4>Spending by Purpose</h4>
-                        <ul class="detail-list">
-                            ${(c.spending_by_purpose || []).slice(0, 5).map(s => `
-                                <li><span class="name">${s.purpose}</span><span class="amt">${fmtFull(s.total)}</span></li>
-                            `).join('') || '<li><span class="name">No expenditures reported</span></li>'}
-                        </ul>
-                    </div>
+                    ${donorList || '<div class="detail-section"><h4>Top Donors</h4><ul class="detail-list"><li><span class="name">No contributions reported</span></li></ul></div>'}
+                    ${geoBar}
+                    ${spendList || '<div class="detail-section"><h4>Spending</h4><ul class="detail-list"><li><span class="name">No expenditures reported</span></li></ul></div>'}
                 `;
             }
 
