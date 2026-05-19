@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC 2026 Campaign Finance Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text: #111;
+            --text-secondary: #555;
+            --text-muted: #888;
+            --border: #e0e0e0;
+            --bg: #fff;
+            --bg-card: #f7f8fa;
+            --accent: #1a56db;
+            --accent-light: #e8eefb;
+            --green: #0d7a3f;
+            --red: #c0392b;
+            --dem: #2563eb;
+            --rep: #dc2626;
+            --ind: #6b7280;
+            --green-party: #16a34a;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+        /* ── HEADER ── */
+        header {
+            padding: 48px 0 32px;
+            border-bottom: 1px solid var(--border);
+        }
+        header .kicker {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+        header .dek {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            max-width: 600px;
+        }
+        .updated {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        /* ── CONTROLS ── */
+        .controls {
+            padding: 24px 0 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .controls label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+        select {
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 8px 32px 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--text);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+        /* ── RACE OVERVIEW ── */
+        .race-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            padding: 16px 0 24px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .stat-card .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+        .stat-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .stat-card .value.green { color: var(--green); }
+        .stat-card .value.red { color: var(--red); }
+
+        /* ── CANDIDATE TABLE ── */
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 20px 0 10px;
+            border-bottom: 2px solid var(--text);
+            margin-bottom: 0;
+        }
+        .candidate-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .candidate-table th {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .candidate-table th.num { text-align: right; }
+        .candidate-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.88rem;
+            vertical-align: top;
+        }
+        .candidate-table td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .candidate-table tr:hover { background: #fafbfd; }
+        .candidate-table tr.expanded-row { background: var(--bg-card); }
+        .candidate-table tr.expanded-row:hover { background: var(--bg-card); }
+
+        .candidate-name {
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--accent);
+        }
+        .candidate-name:hover { text-decoration: underline; }
+        .party-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        .party-badge.dem { background: #dbeafe; color: var(--dem); }
+        .party-badge.rep { background: #fee2e2; color: var(--rep); }
+        .party-badge.ind { background: #f3f4f6; color: var(--ind); }
+        .party-badge.green { background: #dcfce7; color: var(--green-party); }
+        .party-badge.other { background: #f3f4f6; color: var(--ind); }
+        .committee-name {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .bar-cell { min-width: 140px; }
+        .bar-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bar {
+            height: 16px;
+            border-radius: 3px;
+            min-width: 2px;
+            transition: width 0.3s ease;
+        }
+        .bar.raised { background: var(--accent); }
+        .bar.spent { background: var(--red); opacity: 0.7; }
+        .bar-label { font-size: 0.82rem; font-weight: 500; white-space: nowrap; }
+
+        /* ── EXPANDED DETAIL ── */
+        .detail-panel {
+            display: none;
+            padding: 16px 8px 20px;
+        }
+        .detail-panel.open { display: block; }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .detail-section h4 {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .detail-list { list-style: none; }
+        .detail-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.82rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .detail-list li:last-child { border-bottom: none; }
+        .detail-list .name { color: var(--text); max-width: 65%; }
+        .detail-list .amt { font-weight: 500; font-variant-numeric: tabular-nums; }
+
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 48px;
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.5rem; }
+            .race-overview { grid-template-columns: 1fr 1fr; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .candidate-table { font-size: 0.82rem; }
+            .bar-cell { min-width: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="kicker">2026 Election</div>
+            <h1>DC Campaign Finance Tracker</h1>
+            <p class="dek">Contributions and expenditures for the 2026 District of Columbia elections, sourced from the DC Office of Campaign Finance.</p>
+            <p class="updated" id="updated"></p>
+        </header>
+
+        <div class="controls">
+            <label for="race-select">Race</label>
+            <select id="race-select"></select>
+        </div>
+
+        <div class="race-overview" id="race-overview"></div>
+
+        <h3 class="section-title" id="table-title">Candidates</h3>
+        <table class="candidate-table">
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th class="num">Raised</th>
+                    <th class="bar-cell">Contributions</th>
+                    <th class="num">Spent</th>
+                    <th class="bar-cell">Expenditures</th>
+                </tr>
+            </thead>
+            <tbody id="candidate-body"></tbody>
+        </table>
+
+        <footer>
+            <p>Data from the <a href="https://efiling.ocf.dc.gov/ContributionExpenditure" target="_blank">DC Office of Campaign Finance e-filing system</a>. Updated daily. Only includes committees tagged to the 2026 election year by OCF.</p>
+        </footer>
+    </div>
+
+    <script>
+    let DATA = null;
+
+    // ── Race groupings for cleaner display ──
+    const RACE_ORDER = [
+        'All Races',
+        'Mayor',
+        'Council Chairperson',
+        'Council At-Large',
+        'Council Ward 5',
+        'Council Ward 6',
+        'Council Ward 8',
+        'Attorney General',
+        'US Senator',
+        'US Representative',
+        'Independent Expenditure Committees',
+        'Initiatives & Ballot Measures',
+        'Other Committees',
+    ];
+
+    const RACE_GROUPS = {
+        'Independent Expenditure Committees': c => c.office === 'No Office' && c.filer_type === 'Independent Expenditure Committee',
+        'Initiatives & Ballot Measures': c => c.office === 'No Office' && (c.filer_type === 'Initiative' || c.filer_type === 'Recall'),
+        'Other Committees': c => ['Supporting', 'No Office', 'Democratic National Committeeman',
+            'At-Large DC Democratic State Committee', 'Ward 2 of the DC Republican Committee',
+            'Ward 8 DC Democratic State Committee'].includes(c.office)
+            && c.filer_type !== 'Independent Expenditure Committee'
+            && c.filer_type !== 'Initiative' && c.filer_type !== 'Recall',
+    };
+
+    function getCommitteesForRace(race) {
+        if (race === 'All Races') return DATA.committees;
+        if (RACE_GROUPS[race]) return DATA.committees.filter(RACE_GROUPS[race]);
+        return DATA.committees.filter(c => c.office === race);
+    }
+
+    function fmt(n) {
+        if (n >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
+        if (n >= 1000) return '$' + (n / 1000).toFixed(0) + 'K';
+        return '$' + n.toFixed(0);
+    }
+
+    function fmtFull(n) {
+        return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function partyClass(party) {
+        if (!party) return 'other';
+        const p = party.toLowerCase();
+        if (p.includes('democrat')) return 'dem';
+        if (p.includes('republican')) return 'rep';
+        if (p.includes('green') || p.includes('statehood')) return 'green';
+        if (p.includes('independent')) return 'ind';
+        return 'other';
+    }
+
+    function partyLabel(party) {
+        if (!party) return '';
+        const p = party.toLowerCase();
+        if (p.includes('democrat')) return 'D';
+        if (p.includes('republican')) return 'R';
+        if (p.includes('green') || p.includes('statehood')) return 'G';
+        if (p.includes('independent')) return 'I';
+        return party.charAt(0);
+    }
+
+    function renderOverview(committees) {
+        const el = document.getElementById('race-overview');
+        const totalRaised = committees.reduce((s, c) => s + c.total_raised, 0);
+        const totalSpent = committees.reduce((s, c) => s + c.total_spent, 0);
+        const totalContribs = committees.reduce((s, c) => s + c.num_contributions, 0);
+        const numCommittees = committees.length;
+
+        el.innerHTML = `
+            <div class="stat-card">
+                <div class="label">Total Raised</div>
+                <div class="value green">${fmt(totalRaised)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Total Spent</div>
+                <div class="value red">${fmt(totalSpent)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Contributions</div>
+                <div class="value">${totalContribs.toLocaleString()}</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Committees</div>
+                <div class="value">${numCommittees}</div>
+            </div>
+        `;
+    }
+
+    function renderTable(committees) {
+        const body = document.getElementById('candidate-body');
+        const maxRaised = Math.max(...committees.map(c => c.total_raised), 1);
+        const maxSpent = Math.max(...committees.map(c => c.total_spent), 1);
+
+        const sorted = [...committees].sort((a, b) => b.total_raised - a.total_raised);
+
+        body.innerHTML = sorted.map((c, i) => {
+            const displayName = c.candidate_name || c.committee_name;
+            const raisedPct = (c.total_raised / maxRaised * 100).toFixed(1);
+            const spentPct = (c.total_spent / maxSpent * 100).toFixed(1);
+            const pl = partyLabel(c.party);
+            const pc = partyClass(c.party);
+            const partyBadge = pl ? `<span class="party-badge ${pc}">${pl}</span>` : '';
+
+            return `
+                <tr>
+                    <td>
+                        <span class="candidate-name" onclick="toggleDetail(${i})">${displayName}</span>${partyBadge}
+                        <div class="committee-name">${c.candidate_name ? c.committee_name : ''}</div>
+                    </td>
+                    <td class="num">${fmtFull(c.total_raised)}</td>
+                    <td class="bar-cell">
+                        <div class="bar-wrapper">
+                            <div class="bar raised" style="width:${raisedPct}%"></div>
+                            <span class="bar-label">${c.num_contributions}</span>
+                        </div>
+                    </td>
+                    <td class="num">${fmtFull(c.total_spent)}</td>
+                    <td class="bar-cell">
+                        <div class="bar-wrapper">
+                            <div class="bar spent" style="width:${spentPct}%"></div>
+                            <span class="bar-label">${c.num_expenditures}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="expanded-row" id="detail-row-${i}" style="display:none">
+                    <td colspan="5">
+                        <div class="detail-panel open">
+                            <div class="detail-grid">
+                                <div class="detail-section">
+                                    <h4>Top Donors</h4>
+                                    <ul class="detail-list">
+                                        ${(c.top_donors || []).map(d => `
+                                            <li>
+                                                <span class="name">${d.name}</span>
+                                                <span class="amt">${fmtFull(d.total)}</span>
+                                            </li>
+                                        `).join('') || '<li><span class="name">No contributions</span></li>'}
+                                    </ul>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>Spending by Purpose</h4>
+                                    <ul class="detail-list">
+                                        ${(c.spending_by_purpose || []).slice(0, 5).map(s => `
+                                            <li>
+                                                <span class="name">${s.purpose}</span>
+                                                <span class="amt">${fmtFull(s.total)}</span>
+                                            </li>
+                                        `).join('') || '<li><span class="name">No expenditures</span></li>'}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function toggleDetail(idx) {
+        const row = document.getElementById(`detail-row-${idx}`);
+        row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+    }
+
+    function onRaceChange() {
+        const race = document.getElementById('race-select').value;
+        const committees = getCommitteesForRace(race);
+        const title = document.getElementById('table-title');
+        title.textContent = race === 'All Races' ? 'All Committees' : race;
+        renderOverview(committees);
+        renderTable(committees);
+    }
+
+    function init(data) {
+        DATA = data;
+
+        // Attach filer_type to committees from the committee name
+        const registry = {};
+        // We need filer_type info - add it from the lookup
+        // The site_data doesn't have filer_type per committee, let's use the office + registry
+        // For now, tag IECs and Initiatives by checking if they have "No Office" and specific patterns
+        DATA.committees.forEach(c => {
+            // Infer filer_type from office and committee patterns
+            if (!c.filer_type) c.filer_type = '';
+        });
+
+        // Updated timestamp
+        if (data.metadata && data.metadata.last_updated) {
+            document.getElementById('updated').textContent =
+                'Last updated: ' + data.metadata.last_updated;
+        }
+
+        // Build race dropdown
+        const select = document.getElementById('race-select');
+        const availableRaces = new Set();
+        DATA.committees.forEach(c => {
+            if (c.office) availableRaces.add(c.office);
+        });
+
+        // Add grouped races
+        RACE_ORDER.forEach(race => {
+            if (race === 'All Races' || RACE_GROUPS[race]) {
+                const opt = document.createElement('option');
+                opt.value = race;
+                opt.textContent = race;
+                select.appendChild(opt);
+            } else if (availableRaces.has(race)) {
+                const opt = document.createElement('option');
+                opt.value = race;
+                opt.textContent = race;
+                select.appendChild(opt);
+            }
+        });
+
+        select.addEventListener('change', onRaceChange);
+        onRaceChange();
+    }
+
+    // Load data from GitHub raw (auto-updating) with local fallback
+    const GITHUB_DATA = 'https://raw.githubusercontent.com/aarushisahejpal/dc-campaign-finance/main/data/site_data.json';
+    const LOCAL_DATA = 'data/site_data.json';
+
+    fetch(GITHUB_DATA)
+        .then(r => { if (!r.ok) throw new Error('GitHub fetch failed'); return r.json(); })
+        .catch(() => fetch(LOCAL_DATA).then(r => r.json()))
+        .then(init)
+        .catch(e => {
+            console.error('Failed to load data:', e);
+            document.getElementById('candidate-body').innerHTML =
+                '<tr><td colspan="5">Failed to load data. Run the scraper first.</td></tr>';
+        });
+    </script>
+</body>
+</html>

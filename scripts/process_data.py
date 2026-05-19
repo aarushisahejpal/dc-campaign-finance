@@ -204,6 +204,61 @@ def build_spending_by_purpose(expenditures):
     ).reset_index().sort_values(["Committee Name", "total"], ascending=[True, False])
 
 
+def build_site_json(contributions, expenditures, lookup, metadata):
+    """Build the JSON file that powers the landing page."""
+    site_path = os.path.join(SCRIPT_DIR, "..", "data", "site_data.json")
+
+    all_names = set()
+    if not contributions.empty:
+        all_names.update(contributions["Committee Name"].unique())
+    if not expenditures.empty:
+        all_names.update(expenditures["Committee Name"].unique())
+
+    committees = []
+    for name in sorted(all_names):
+        info = lookup.get(name, {})
+        c = contributions[contributions["Committee Name"] == name] if not contributions.empty else pd.DataFrame()
+        e = expenditures[expenditures["Committee Name"] == name] if not expenditures.empty else pd.DataFrame()
+
+        # Top 5 donors
+        top_donors = []
+        if not c.empty:
+            dc = c.copy()
+            dc["donor"] = (c["Contributor First Name"].fillna("") + " " + c["Contributor Last Name"].fillna("")).str.strip()
+            mask = c["Contributor Organization Name"].fillna("").str.strip() != ""
+            dc.loc[mask, "donor"] = c.loc[mask, "Contributor Organization Name"]
+            top5 = dc.groupby("donor")["amount_clean"].sum().sort_values(ascending=False).head(5)
+            top_donors = [{"name": n, "total": round(v, 2)} for n, v in top5.items()]
+
+        # Spending by purpose
+        spending = []
+        if not e.empty and "Purpose of Expenditure" in e.columns:
+            purposes = e.groupby("Purpose of Expenditure")["amount_clean"].sum().sort_values(ascending=False)
+            spending = [{"purpose": p, "total": round(v, 2)} for p, v in purposes.items()]
+
+        committees.append({
+            "committee_name": name,
+            "candidate_name": info.get("candidate_name", ""),
+            "office": info.get("office", ""),
+            "party": info.get("party", ""),
+            "committee_id": info.get("committee_id", ""),
+            "filer_type": info.get("filer_type", ""),
+            "total_raised": round(c["amount_clean"].sum(), 2) if not c.empty else 0,
+            "total_spent": round(e["amount_clean"].sum(), 2) if not e.empty else 0,
+            "num_contributions": len(c),
+            "num_expenditures": len(e),
+            "avg_contribution": round(c["amount_clean"].mean(), 2) if not c.empty else 0,
+            "max_contribution": round(c["amount_clean"].max(), 2) if not c.empty else 0,
+            "top_donors": top_donors,
+            "spending_by_purpose": spending,
+        })
+
+    site_data = {"metadata": metadata, "committees": committees}
+    with open(site_path, "w") as f:
+        json.dump(site_data, f)
+    print(f"  Site JSON: {site_path} ({len(committees)} committees)")
+
+
 def save_to_sqlite(registry, contributions, expenditures, candidate_summary,
                    race_summary, donor_summary, spending):
     """Write all tables to SQLite."""
@@ -288,6 +343,10 @@ def main():
     print("Building spending by purpose...")
     spending = build_spending_by_purpose(expenditures)
     spending.to_csv(os.path.join(PROCESSED_DIR, "spending_by_purpose.csv"), index=False)
+
+    print("Building site data JSON...")
+    build_site_json(contributions, expenditures, lookup,
+                    json.load(open(os.path.join(RAW_DIR, "metadata.json"))))
 
     print("Saving to SQLite...")
     save_to_sqlite(registry, contributions, expenditures, candidate_summary,

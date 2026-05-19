@@ -22,8 +22,16 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run scraper
+      - name: Install Chrome for Selenium
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Run contribution/expenditure scraper
         run: python scrapers/ocf_scraper.py
+
+      - name: Run filer registry scraper
+        run: python scrapers/filer_registry.py
 
       - name: Process data
         run: python scripts/process_data.py
@@ -32,9 +40,8 @@ jobs:
         run: |
           echo "=== Data check ==="
           wc -l data/raw/contributions.csv data/raw/expenditures.csv
-          wc -l data/processed/candidate_summary.csv data/processed/donor_summary.csv
-          echo "=== Top fundraisers ==="
-          head -11 data/processed/candidate_summary.csv
+          wc -l data/processed/candidate_summary.csv
+          ls -lh data/site_data.json
 
       - name: Commit and push
         run: |
