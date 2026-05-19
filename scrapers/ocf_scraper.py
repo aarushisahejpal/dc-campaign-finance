@@ -164,21 +164,42 @@ def scrape_all(from_date="01/01/2003", to_date=None, filer_types=None):
         print()
 
 
+def write_metadata(from_date, to_date, contrib_count, expend_count):
+    """Write a metadata file with scrape timestamp and counts."""
+    meta_path = os.path.join(RAW_DIR, "metadata.json")
+    import json
+    meta = {
+        "last_updated": date.today().isoformat(),
+        "scrape_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "date_range": {"from": from_date, "to": to_date},
+        "contributions_count": contrib_count,
+        "expenditures_count": expend_count,
+    }
+    with open(meta_path, "w") as f:
+        json.dump(meta, f, indent=2)
+    print(f"Metadata: {meta_path}")
+
+
 def main():
-    """Scrape 2026 election cycle data."""
+    """Scrape current DC election cycle data."""
     print("DC Campaign Finance scraper")
     print("=" * 50)
     print()
 
-    # Scrape the current election cycle
+    # Full current cycle: 2024 onward
     from_date = "01/01/2024"
     to_date = date.today().strftime("%m/%d/%Y")
     print(f"Date range: {from_date} to {to_date}\n")
 
-    print("Scraping contributions...")
-    print("Scraping expenditures...")
     scrape_all(from_date=from_date, to_date=to_date)
 
+    # Count results
+    contrib_path = os.path.join(RAW_DIR, "contributions.csv")
+    expend_path = os.path.join(RAW_DIR, "expenditures.csv")
+    c_count = sum(1 for _ in open(contrib_path)) - 1 if os.path.exists(contrib_path) else 0
+    e_count = sum(1 for _ in open(expend_path)) - 1 if os.path.exists(expend_path) else 0
+
+    write_metadata(from_date, to_date, c_count, e_count)
     print("Done!")
 
 

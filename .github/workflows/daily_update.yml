@@ -1,0 +1,49 @@
+name: Daily data update
+
+on:
+  schedule:
+    # 6am ET every day (11:00 UTC)
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-and-process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run scraper
+        run: python scrapers/ocf_scraper.py
+
+      - name: Process data
+        run: python scripts/process_data.py
+
+      - name: Verify data
+        run: |
+          echo "=== Data check ==="
+          wc -l data/raw/contributions.csv data/raw/expenditures.csv
+          wc -l data/processed/candidate_summary.csv data/processed/donor_summary.csv
+          echo "=== Top fundraisers ==="
+          head -11 data/processed/candidate_summary.csv
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No data changes"
+          else
+            git commit -m "data: daily update $(date -u +%Y-%m-%d)"
+            git push
+          fi
