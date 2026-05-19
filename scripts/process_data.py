@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
 Process raw DC campaign finance CSVs into candidate-level summaries.
+Joins financial data with the filer registry to map committees to races.
 Reads from data/raw/, writes to data/processed/.
 """
 
+import json
 import os
 import sqlite3
 
@@ -20,6 +22,47 @@ def clean_amount(s):
     if pd.isna(s):
         return 0.0
     return float(str(s).replace("$", "").replace(",", "").strip())
+
+
+def load_registry():
+    """Load filer registry JSON into a DataFrame for joining."""
+    path = os.path.join(RAW_DIR, "filer_registry.json")
+    if not os.path.exists(path):
+        print("  WARNING: No filer_registry.json found")
+        return pd.DataFrame()
+    with open(path) as f:
+        data = json.load(f)
+    if not data:
+        return pd.DataFrame()
+    df = pd.DataFrame(data)
+    return df
+
+
+def build_registry_lookup(registry):
+    """Build a CommitteeName -> {office, party, candidate, committee_id} lookup.
+
+    Some candidates have multiple committees (e.g. Yaida Ford has two).
+    We keep all of them — the CommitteeName in the financial data will match.
+    """
+    if registry.empty:
+        return {}
+
+    lookup = {}
+    for _, row in registry.iterrows():
+        name = row.get("CommitteeName", "")
+        if not name:
+            continue
+        lookup[name] = {
+            "committee_id": row.get("CommitteeId"),
+            "candidate_name": str(row.get("CandidateName", "")).strip(),
+            "first_name": str(row.get("FirstName", "")).strip(),
+            "last_name": str(row.get("LastName", "")).strip(),
+            "office": row.get("Office", ""),
+            "party": row.get("PartyName", ""),
+            "election_year": row.get("ElectionYear"),
+            "filer_type": row.get("FilerType", ""),
+        }
+    return lookup
 
 
 def load_contributions():
@@ -44,10 +87,17 @@ def load_expenditures():
     return df
 
 
-def build_candidate_summary(contributions, expenditures):
-    """Aggregate contributions and expenditures by committee."""
-    rows = []
+def enrich_with_registry(df, lookup):
+    """Add office, party, candidate_name, committee_id columns from registry."""
+    df["office"] = df["Committee Name"].map(lambda x: lookup.get(x, {}).get("office", ""))
+    df["party"] = df["Committee Name"].map(lambda x: lookup.get(x, {}).get("party", ""))
+    df["candidate_name"] = df["Committee Name"].map(lambda x: lookup.get(x, {}).get("candidate_name", ""))
+    df["committee_id"] = df["Committee Name"].map(lambda x: lookup.get(x, {}).get("committee_id", ""))
+    return df
 
+
+def build_candidate_summary(contributions, expenditures, lookup):
+    """Aggregate contributions and expenditures by committee, enriched with race info."""
     if not contributions.empty:
         contrib_agg = contributions.groupby("Committee Name").agg(
             total_raised=("amount_clean", "sum"),
@@ -77,15 +127,40 @@ def build_candidate_summary(contributions, expenditures):
         ])
 
     summary = contrib_agg.merge(expend_agg, on="Committee Name", how="outer")
-    # Only fill numeric columns with 0; leave dates/strings as-is
     for col in ["total_raised", "num_contributions", "avg_contribution",
                 "max_contribution", "num_unique_donors", "total_spent", "num_expenditures"]:
         if col in summary.columns:
             summary[col] = summary[col].fillna(0)
     summary["cash_on_hand_proxy"] = summary["total_raised"] - summary["total_spent"]
-    summary = summary.sort_values("total_raised", ascending=False)
 
+    # Enrich with registry data
+    summary["office"] = summary["Committee Name"].map(lambda x: lookup.get(x, {}).get("office", ""))
+    summary["party"] = summary["Committee Name"].map(lambda x: lookup.get(x, {}).get("party", ""))
+    summary["candidate_name"] = summary["Committee Name"].map(lambda x: lookup.get(x, {}).get("candidate_name", ""))
+    summary["committee_id"] = summary["Committee Name"].map(lambda x: lookup.get(x, {}).get("committee_id", ""))
+    summary["election_year"] = summary["Committee Name"].map(lambda x: lookup.get(x, {}).get("election_year", ""))
+
+    summary = summary.sort_values("total_raised", ascending=False)
     return summary
+
+
+def build_race_summary(candidate_summary):
+    """Aggregate by race/office."""
+    if candidate_summary.empty:
+        return pd.DataFrame()
+
+    has_office = candidate_summary[candidate_summary["office"] != ""]
+    if has_office.empty:
+        return pd.DataFrame()
+
+    race_agg = has_office.groupby("office").agg(
+        num_committees=("Committee Name", "count"),
+        total_raised=("total_raised", "sum"),
+        total_spent=("total_spent", "sum"),
+        top_fundraiser=("Committee Name", "first"),  # already sorted by total_raised desc
+    ).reset_index().sort_values("total_raised", ascending=False)
+
+    return race_agg
 
 
 def build_donor_summary(contributions):
@@ -93,7 +168,6 @@ def build_donor_summary(contributions):
     if contributions.empty:
         return pd.DataFrame()
 
-    # Build a full donor name
     contributions = contributions.copy()
     contributions["donor_name"] = (
         contributions["Contributor First Name"].fillna("")
@@ -101,7 +175,6 @@ def build_donor_summary(contributions):
         + contributions["Contributor Last Name"].fillna("")
     ).str.strip()
 
-    # For orgs, use org name
     mask = contributions["Contributor Organization Name"].fillna("").str.strip() != ""
     contributions.loc[mask, "donor_name"] = contributions.loc[mask, "Contributor Organization Name"]
 
@@ -131,10 +204,13 @@ def build_spending_by_purpose(expenditures):
     ).reset_index().sort_values(["Committee Name", "total"], ascending=[True, False])
 
 
-def save_to_sqlite(contributions, expenditures, candidate_summary, donor_summary, spending):
+def save_to_sqlite(registry, contributions, expenditures, candidate_summary,
+                   race_summary, donor_summary, spending):
     """Write all tables to SQLite."""
     conn = sqlite3.connect(DB_PATH)
 
+    if not registry.empty:
+        registry.to_sql("filer_registry", conn, if_exists="replace", index=False)
     if not contributions.empty:
         contributions.to_sql("contributions", conn, if_exists="replace", index=False)
     if not expenditures.empty:
@@ -145,6 +221,8 @@ def save_to_sqlite(contributions, expenditures, candidate_summary, donor_summary
             if pd.api.types.is_datetime64_any_dtype(cs[col]):
                 cs[col] = cs[col].dt.strftime("%Y-%m-%d").fillna("")
         cs.to_sql("candidate_summary", conn, if_exists="replace", index=False)
+    if not race_summary.empty:
+        race_summary.to_sql("race_summary", conn, if_exists="replace", index=False)
     if not donor_summary.empty:
         donor_summary.to_sql("donor_summary", conn, if_exists="replace", index=False)
     if not spending.empty:
@@ -157,44 +235,63 @@ def save_to_sqlite(contributions, expenditures, candidate_summary, donor_summary
 def main():
     os.makedirs(PROCESSED_DIR, exist_ok=True)
 
+    print("Loading filer registry...")
+    registry = load_registry()
+    lookup = build_registry_lookup(registry)
+    print(f"  {len(lookup)} committees in registry")
+
     print("Loading raw data...")
     contributions = load_contributions()
     expenditures = load_expenditures()
-
     print(f"  Contributions: {len(contributions):,} records")
     print(f"  Expenditures:  {len(expenditures):,} records")
-    print()
 
+    # Enrich transaction data with race/candidate info
+    if lookup:
+        print("Enriching with registry data...")
+        contributions = enrich_with_registry(contributions, lookup)
+        expenditures = enrich_with_registry(expenditures, lookup)
+        matched_c = (contributions["office"] != "").sum()
+        matched_e = (expenditures["office"] != "").sum()
+        print(f"  Contributions matched to a race: {matched_c:,}/{len(contributions):,}")
+        print(f"  Expenditures matched to a race:  {matched_e:,}/{len(expenditures):,}")
+
+    print()
     print("Building candidate summary...")
-    candidate_summary = build_candidate_summary(contributions, expenditures)
-    candidate_summary.to_csv(
-        os.path.join(PROCESSED_DIR, "candidate_summary.csv"), index=False
-    )
+    candidate_summary = build_candidate_summary(contributions, expenditures, lookup)
+    candidate_summary.to_csv(os.path.join(PROCESSED_DIR, "candidate_summary.csv"), index=False)
     print(f"  {len(candidate_summary)} committees")
 
-    # Print top fundraisers
     if not candidate_summary.empty:
         print("\n  Top 10 fundraisers:")
         for _, row in candidate_summary.head(10).iterrows():
-            print(f"    {row['Committee Name']}: ${row['total_raised']:,.0f} "
+            office = f" [{row['office']}]" if row.get("office") else ""
+            print(f"    {row['Committee Name']}{office}: ${row['total_raised']:,.0f} "
                   f"({int(row['num_contributions'])} contributions)")
+        print()
+
+    print("Building race summary...")
+    race_summary = build_race_summary(candidate_summary)
+    race_summary.to_csv(os.path.join(PROCESSED_DIR, "race_summary.csv"), index=False)
+    if not race_summary.empty:
+        print("  Money by race:")
+        for _, row in race_summary.iterrows():
+            print(f"    {row['office']}: ${row['total_raised']:,.0f} raised, "
+                  f"${row['total_spent']:,.0f} spent ({int(row['num_committees'])} committees)")
         print()
 
     print("Building donor summary...")
     donor_summary = build_donor_summary(contributions)
-    donor_summary.to_csv(
-        os.path.join(PROCESSED_DIR, "donor_summary.csv"), index=False
-    )
+    donor_summary.to_csv(os.path.join(PROCESSED_DIR, "donor_summary.csv"), index=False)
     print(f"  {len(donor_summary):,} unique donors")
 
     print("Building spending by purpose...")
     spending = build_spending_by_purpose(expenditures)
-    spending.to_csv(
-        os.path.join(PROCESSED_DIR, "spending_by_purpose.csv"), index=False
-    )
+    spending.to_csv(os.path.join(PROCESSED_DIR, "spending_by_purpose.csv"), index=False)
 
     print("Saving to SQLite...")
-    save_to_sqlite(contributions, expenditures, candidate_summary, donor_summary, spending)
+    save_to_sqlite(registry, contributions, expenditures, candidate_summary,
+                   race_summary, donor_summary, spending)
 
     print("\nDone!")
 

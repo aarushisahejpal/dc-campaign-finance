@@ -2,11 +2,12 @@
 """
 DC Office of Campaign Finance scraper.
 Pulls contributions and expenditures via the CSV export endpoint
-at efiling.ocf.dc.gov for all filer types.
+at efiling.ocf.dc.gov for all filer types tagged to the 2026 election.
 """
 
 import csv
 import io
+import json
 import os
 import re
 import time
@@ -18,6 +19,9 @@ BASE_URL = "https://efiling.ocf.dc.gov/ContributionExpenditure"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_DIR = os.path.join(SCRIPT_DIR, "..", "data", "raw")
 
+ELECTION_YEAR = "2026"
+
+# All filer types on the OCF site
 FILER_TYPES = {
     "2": "Principal Campaign Committee",
     "3": "Political Action Committee",
@@ -56,7 +60,7 @@ def get_session_and_token():
     return session, match.group(1)
 
 
-def scrape_csv(session, token, filer_type_id, search_type, from_date, to_date):
+def scrape_csv(session, token, filer_type_id, search_type, election_year=None):
     """Submit a search and download the CSV export.
 
     Returns decoded CSV text (may be empty if no results).
@@ -65,9 +69,10 @@ def scrape_csv(session, token, filer_type_id, search_type, from_date, to_date):
         "__RequestVerificationToken": token,
         "FilerTypeId": filer_type_id,
         "SearchType": search_type,
-        "FromDate": from_date,
-        "ToDate": to_date,
     }
+    if election_year:
+        data["ElectionYear"] = election_year
+
     # Submit search to set server-side session state
     r = session.post(
         f"{BASE_URL}/SubmitSearch",
@@ -106,34 +111,25 @@ def parse_csv_text(csv_text):
     return list(reader)
 
 
-def scrape_all(from_date="01/01/2003", to_date=None, filer_types=None):
-    """Scrape contributions and expenditures for all filer types.
-
-    Args:
-        from_date: Start date in MM/DD/YYYY format.
-        to_date: End date in MM/DD/YYYY format (defaults to today).
-        filer_types: Dict of filer type IDs to scrape (defaults to all).
+def scrape_all(election_year=ELECTION_YEAR):
+    """Scrape contributions and expenditures for all filer types
+    tagged to a given election year.
     """
-    if to_date is None:
-        to_date = date.today().strftime("%m/%d/%Y")
-    if filer_types is None:
-        filer_types = FILER_TYPES
-
     os.makedirs(RAW_DIR, exist_ok=True)
-
     session, token = get_session_and_token()
 
     for search_type in ["Contributions", "Expenditures"]:
+        print(f"Scraping {search_type.lower()}...")
         all_rows = []
-        for filer_id, filer_name in filer_types.items():
+        for filer_id, filer_name in FILER_TYPES.items():
             print(f"  {filer_name} ({filer_id})...", end=" ", flush=True)
 
             try:
                 csv_text = scrape_csv(
-                    session, token, filer_id, search_type, from_date, to_date
+                    session, token, filer_id, search_type,
+                    election_year=election_year,
                 )
                 rows = parse_csv_text(csv_text)
-                # Tag each row with filer type
                 for row in rows:
                     row["Filer Type"] = filer_name
                 all_rows.extend(rows)
@@ -141,7 +137,7 @@ def scrape_all(from_date="01/01/2003", to_date=None, filer_types=None):
             except Exception as e:
                 print(f"ERROR: {e}")
 
-            time.sleep(1)  # be polite
+            time.sleep(1)
 
         if all_rows:
             out_file = os.path.join(RAW_DIR, f"{search_type.lower()}.csv")
@@ -163,15 +159,16 @@ def scrape_all(from_date="01/01/2003", to_date=None, filer_types=None):
 
         print()
 
+    return all_rows is not None
 
-def write_metadata(from_date, to_date, contrib_count, expend_count):
+
+def write_metadata(election_year, contrib_count, expend_count):
     """Write a metadata file with scrape timestamp and counts."""
     meta_path = os.path.join(RAW_DIR, "metadata.json")
-    import json
     meta = {
+        "election_year": election_year,
         "last_updated": date.today().isoformat(),
         "scrape_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "date_range": {"from": from_date, "to": to_date},
         "contributions_count": contrib_count,
         "expenditures_count": expend_count,
     }
@@ -181,17 +178,13 @@ def write_metadata(from_date, to_date, contrib_count, expend_count):
 
 
 def main():
-    """Scrape current DC election cycle data."""
+    """Scrape 2026 DC election data."""
     print("DC Campaign Finance scraper")
+    print(f"Election year: {ELECTION_YEAR}")
     print("=" * 50)
     print()
 
-    # Full current cycle: 2024 onward
-    from_date = "01/01/2024"
-    to_date = date.today().strftime("%m/%d/%Y")
-    print(f"Date range: {from_date} to {to_date}\n")
-
-    scrape_all(from_date=from_date, to_date=to_date)
+    scrape_all(election_year=ELECTION_YEAR)
 
     # Count results
     contrib_path = os.path.join(RAW_DIR, "contributions.csv")
@@ -199,7 +192,7 @@ def main():
     c_count = sum(1 for _ in open(contrib_path)) - 1 if os.path.exists(contrib_path) else 0
     e_count = sum(1 for _ in open(expend_path)) - 1 if os.path.exists(expend_path) else 0
 
-    write_metadata(from_date, to_date, c_count, e_count)
+    write_metadata(ELECTION_YEAR, c_count, e_count)
     print("Done!")
 
 

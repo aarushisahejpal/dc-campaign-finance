@@ -1,10 +1,7 @@
 {
+  "election_year": "2026",
   "last_updated": "2026-05-19",
-  "scrape_timestamp": "2026-05-19T14:46:17Z",
-  "date_range": {
-    "from": "01/01/2024",
-    "to": "05/19/2026"
-  },
-  "contributions_count": 19458,
-  "expenditures_count": 7200
+  "scrape_timestamp": "2026-05-19T15:02:19Z",
+  "contributions_count": 3010,
+  "expenditures_count": 458
 }
