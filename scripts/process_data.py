@@ -205,20 +205,61 @@ def build_spending_by_purpose(expenditures):
 
 
 def build_site_json(contributions, expenditures, lookup, metadata):
-    """Build the JSON file that powers the landing page."""
+    """Build the JSON file that powers the landing page.
+
+    - Includes all 2026-registered committees, even those with $0 activity
+    - Combines multiple committees under the same candidate
+    """
     site_path = os.path.join(SCRIPT_DIR, "..", "data", "site_data.json")
 
-    all_names = set()
+    # Start from 2026-tagged committees in the registry (so $0 filers still appear)
+    all_names = set(
+        name for name, info in lookup.items()
+        if info.get("election_year") == 2026 or info.get("election_year") == "2026"
+    )
     if not contributions.empty:
         all_names.update(contributions["Committee Name"].unique())
     if not expenditures.empty:
         all_names.update(expenditures["Committee Name"].unique())
 
-    committees = []
+    # Build per-committee raw data first
+    raw_committees = []
     for name in sorted(all_names):
         info = lookup.get(name, {})
         c = contributions[contributions["Committee Name"] == name] if not contributions.empty else pd.DataFrame()
         e = expenditures[expenditures["Committee Name"] == name] if not expenditures.empty else pd.DataFrame()
+
+        raw_committees.append({
+            "committee_name": name,
+            "candidate_name": info.get("candidate_name", ""),
+            "office": info.get("office", ""),
+            "party": info.get("party", ""),
+            "committee_id": info.get("committee_id", ""),
+            "filer_type": info.get("filer_type", ""),
+            "_contrib_df": c,
+            "_expend_df": e,
+        })
+
+    # Group by candidate+office to combine multiple committees per candidate
+    from collections import defaultdict
+    candidate_groups = defaultdict(list)
+    for rc in raw_committees:
+        cname = rc["candidate_name"]
+        office = rc["office"]
+        # Non-candidate committees (IECs, initiatives, PACs) keep their own identity
+        if not cname or rc["filer_type"] not in ("Principal Campaign Committee", "Exploratory Committee"):
+            key = rc["committee_name"]
+        else:
+            key = f"{cname}||{office}"
+        candidate_groups[key].append(rc)
+
+    committees = []
+    for key, group in candidate_groups.items():
+        # Merge all contributions and expenditures across the candidate's committees
+        c_frames = [g["_contrib_df"] for g in group if not g["_contrib_df"].empty]
+        e_frames = [g["_expend_df"] for g in group if not g["_expend_df"].empty]
+        c = pd.concat(c_frames) if c_frames else pd.DataFrame()
+        e = pd.concat(e_frames) if e_frames else pd.DataFrame()
 
         # Top 5 donors
         top_donors = []
@@ -236,13 +277,16 @@ def build_site_json(contributions, expenditures, lookup, metadata):
             purposes = e.groupby("Purpose of Expenditure")["amount_clean"].sum().sort_values(ascending=False)
             spending = [{"purpose": p, "total": round(v, 2)} for p, v in purposes.items()]
 
+        primary = group[0]
+        committee_names = [g["committee_name"] for g in group]
+
         committees.append({
-            "committee_name": name,
-            "candidate_name": info.get("candidate_name", ""),
-            "office": info.get("office", ""),
-            "party": info.get("party", ""),
-            "committee_id": info.get("committee_id", ""),
-            "filer_type": info.get("filer_type", ""),
+            "committee_name": ", ".join(committee_names),
+            "candidate_name": primary["candidate_name"],
+            "office": primary["office"],
+            "party": primary["party"],
+            "committee_id": primary["committee_id"],
+            "filer_type": primary["filer_type"],
             "total_raised": round(c["amount_clean"].sum(), 2) if not c.empty else 0,
             "total_spent": round(e["amount_clean"].sum(), 2) if not e.empty else 0,
             "num_contributions": len(c),
@@ -256,7 +300,8 @@ def build_site_json(contributions, expenditures, lookup, metadata):
     site_data = {"metadata": metadata, "committees": committees}
     with open(site_path, "w") as f:
         json.dump(site_data, f)
-    print(f"  Site JSON: {site_path} ({len(committees)} committees)")
+    print(f"  Site JSON: {site_path} ({len(committees)} entries, "
+          f"from {len(all_names)} committees)")
 
 
 def save_to_sqlite(registry, contributions, expenditures, candidate_summary,

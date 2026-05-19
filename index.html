@@ -100,30 +100,16 @@
 
         /* ── RACE OVERVIEW ── */
         .race-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-            padding: 16px 0 24px;
+            padding: 18px 0 20px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            border-bottom: 1px solid var(--border);
         }
-        .stat-card {
-            background: var(--bg-card);
-            border-radius: 8px;
-            padding: 16px;
-        }
-        .stat-card .label {
-            font-size: 0.7rem;
+        .race-overview strong {
+            color: var(--text);
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
         }
-        .stat-card .value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 2px;
-        }
-        .stat-card .value.green { color: var(--green); }
-        .stat-card .value.red { color: var(--red); }
 
         /* ── CANDIDATE TABLE ── */
         .section-title {
@@ -365,24 +351,7 @@
         const totalContribs = committees.reduce((s, c) => s + c.num_contributions, 0);
         const numCommittees = committees.length;
 
-        el.innerHTML = `
-            <div class="stat-card">
-                <div class="label">Total Raised</div>
-                <div class="value green">${fmt(totalRaised)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Total Spent</div>
-                <div class="value red">${fmt(totalSpent)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Contributions</div>
-                <div class="value">${totalContribs.toLocaleString()}</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Committees</div>
-                <div class="value">${numCommittees}</div>
-            </div>
-        `;
+        el.innerHTML = `<strong>${numCommittees} committees</strong> have reported <strong>${fmtFull(totalRaised)}</strong> in contributions across <strong>${totalContribs.toLocaleString()}</strong> donations, and <strong>${fmtFull(totalSpent)}</strong> in expenditures.`;
     }
 
     function renderTable(committees) {
