@@ -386,10 +386,10 @@
         const el = document.getElementById('race-overview');
         const totalRaised = committees.reduce((s, c) => s + c.total_raised, 0);
         const totalSpent = committees.reduce((s, c) => s + c.total_spent, 0);
-        const totalContribs = committees.reduce((s, c) => s + c.num_contributions, 0);
         const numCommittees = committees.length;
 
-        el.innerHTML = `<strong>${numCommittees} committees</strong> have reported <strong>${fmtFull(totalRaised)}</strong> in contributions across <strong>${totalContribs.toLocaleString()}</strong> donations, and <strong>${fmtFull(totalSpent)}</strong> in expenditures.`;
+        let text = `<strong>${numCommittees} committees</strong> have reported <strong>${fmtFull(totalRaised)}</strong> raised and <strong>${fmtFull(totalSpent)}</strong> spent.`;
+        el.innerHTML = text;
     }
 
     function sourceLabel(c) {
