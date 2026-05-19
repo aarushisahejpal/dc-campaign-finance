@@ -22,25 +22,30 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Install Chrome for Selenium
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: stable
-
-      - name: Run contribution/expenditure scraper
+      # OCF e-filing: auto-scraped daily (CSV export, exact match)
+      - name: Scrape OCF contributions and expenditures
         run: python scrapers/ocf_scraper.py
 
-      - name: Run filer registry scraper
-        run: python scrapers/filer_registry.py
+      # FEC: auto-scraped daily (API, exact match)
+      - name: Scrape FEC data
+        run: python scrapers/fec_scraper.py
 
-      - name: Process data
+      # Fair Elections: NOT auto-scraped.
+      # The payment overview page requires login and the page-by-page
+      # scraper introduces rounding differences vs the official export.
+      # Upload a fresh Excel export weekly: download from
+      # fairelections.ocf.dc.gov -> Fair Elections Candidates Payment
+      # and Information -> Download Results (Excel), save as
+      # data/raw/fair_elections_export.xlsx, then run:
+      #   python scripts/parse_fair_elections_excel.py
+
+      - name: Process all data
         run: python scripts/process_data.py
 
       - name: Verify data
         run: |
           echo "=== Data check ==="
           wc -l data/raw/contributions.csv data/raw/expenditures.csv
-          wc -l data/processed/candidate_summary.csv
           ls -lh data/site_data.json
 
       - name: Commit and push
