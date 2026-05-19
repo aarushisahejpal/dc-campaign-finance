@@ -297,11 +297,70 @@ def build_site_json(contributions, expenditures, lookup, metadata):
             "spending_by_purpose": spending,
         })
 
-    site_data = {"metadata": metadata, "committees": committees}
+    # Load FEC data if available
+    fec_path = os.path.join(RAW_DIR, "fec_candidates.json")
+    fec_candidates = []
+    if os.path.exists(fec_path):
+        with open(fec_path) as f:
+            fec_raw = json.load(f)
+        for fc in fec_raw:
+            fec_candidates.append({
+                "committee_name": fc.get("name", ""),
+                "candidate_name": fc.get("name", ""),
+                "office": "US House (DC Delegate)",
+                "party": fc.get("party", ""),
+                "committee_id": fc.get("candidate_id", ""),
+                "filer_type": "FEC",
+                "total_raised": fc.get("receipts", 0),
+                "total_spent": fc.get("disbursements", 0),
+                "num_contributions": 0,
+                "num_expenditures": 0,
+                "avg_contribution": 0,
+                "max_contribution": 0,
+                "cash_on_hand": fc.get("cash_on_hand", 0),
+                "top_donors": [],
+                "spending_by_purpose": [],
+            })
+        print(f"  FEC candidates: {len(fec_candidates)}")
+
+    # Load Fair Elections data if available
+    fe_path = os.path.join(RAW_DIR, "fair_elections.json")
+    fe_candidates = []
+    if os.path.exists(fe_path):
+        with open(fe_path) as f:
+            fe_raw = json.load(f)
+        for fc in fe_raw:
+            fe_candidates.append({
+                "committee_name": fc.get("committee_name") or fc.get("committee", ""),
+                "candidate_name": fc.get("candidate_name") or fc.get("name", ""),
+                "office": fc.get("office", ""),
+                "party": fc.get("party", ""),
+                "committee_id": fc.get("committee_id") or fc.get("committee_code", ""),
+                "filer_type": "Fair Elections",
+                "certification_status": fc.get("certification_status", ""),
+                "total_raised": fc.get("total_paid", 0),
+                "total_spent": 0,
+                "base_payment": fc.get("base_payment") or fc.get("base_paid", 0),
+                "matching_payment": fc.get("matching_payment") or fc.get("matching_paid", 0),
+                "num_contributions": 0,
+                "num_expenditures": 0,
+                "avg_contribution": 0,
+                "max_contribution": 0,
+                "top_donors": [],
+                "spending_by_purpose": [],
+            })
+        print(f"  Fair Elections candidates: {len(fe_candidates)}")
+
+    all_entries = committees + fec_candidates + fe_candidates
+    site_data = {
+        "metadata": metadata,
+        "committees": all_entries,
+    }
     with open(site_path, "w") as f:
         json.dump(site_data, f)
-    print(f"  Site JSON: {site_path} ({len(committees)} entries, "
-          f"from {len(all_names)} committees)")
+    print(f"  Site JSON: {site_path} ({len(committees)} OCF + "
+          f"{len(fec_candidates)} FEC + {len(fe_candidates)} Fair Elections "
+          f"= {len(all_entries)} entries)")
 
 
 def save_to_sqlite(registry, contributions, expenditures, candidate_summary,

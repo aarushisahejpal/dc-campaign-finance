@@ -168,6 +168,17 @@
         .party-badge.ind { background: #f3f4f6; color: var(--ind); }
         .party-badge.green { background: #dcfce7; color: var(--green-party); }
         .party-badge.other { background: #f3f4f6; color: var(--ind); }
+        .source-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 500;
+            padding: 2px 7px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+        .source-badge.traditional { background: #f0f4ff; color: #3b5998; }
+        .source-badge.fair-elections { background: #ecfdf5; color: #065f46; }
+        .source-badge.fec { background: #fef3c7; color: #92400e; }
         .committee-name {
             font-size: 0.78rem;
             color: var(--text-muted);
@@ -264,17 +275,16 @@
             <thead>
                 <tr>
                     <th>Candidate</th>
-                    <th class="num">Raised</th>
-                    <th class="bar-cell">Contributions</th>
-                    <th class="num">Spent</th>
-                    <th class="bar-cell">Expenditures</th>
+                    <th class="num">Total Money</th>
+                    <th class="bar-cell"></th>
+                    <th>Source</th>
                 </tr>
             </thead>
             <tbody id="candidate-body"></tbody>
         </table>
 
         <footer>
-            <p>Data from the <a href="https://efiling.ocf.dc.gov/ContributionExpenditure" target="_blank">DC Office of Campaign Finance e-filing system</a>. Updated daily. Only includes committees tagged to the 2026 election year by OCF.</p>
+            <p>Data from three sources: <a href="https://efiling.ocf.dc.gov/ContributionExpenditure" target="_blank">OCF e-filing</a> (traditional candidates, PACs, IECs), <a href="https://fairelections.ocf.dc.gov" target="_blank">DC Fair Elections Program</a> (publicly financed candidates), and the <a href="https://www.fec.gov" target="_blank">FEC</a> (DC Delegate race). OCF data reflects filings through the March 10, 2026 report; next filing deadline is June 10, 2026. Fair Elections candidates file monthly.</p>
         </footer>
     </div>
 
@@ -285,12 +295,16 @@
     const RACE_ORDER = [
         'All Races',
         'Mayor',
+        'Attorney General',
         'Council Chairperson',
+        'Council Chairman',
         'Council At-Large',
+        'Council Ward 1',
+        'Council Ward 3',
         'Council Ward 5',
         'Council Ward 6',
         'Council Ward 8',
-        'Attorney General',
+        'US House (DC Delegate)',
         'US Senator',
         'US Representative',
         'Independent Expenditure Committees',
@@ -354,20 +368,78 @@
         el.innerHTML = `<strong>${numCommittees} committees</strong> have reported <strong>${fmtFull(totalRaised)}</strong> in contributions across <strong>${totalContribs.toLocaleString()}</strong> donations, and <strong>${fmtFull(totalSpent)}</strong> in expenditures.`;
     }
 
+    function sourceLabel(c) {
+        const ft = c.filer_type || '';
+        if (ft === 'Fair Elections') return '<span class="source-badge fair-elections">Fair Elections</span>';
+        if (ft === 'FEC') return '<span class="source-badge fec">FEC</span>';
+        if (ft === 'Independent Expenditure Committee') return '<span class="source-badge traditional">IEC</span>';
+        if (ft === 'Initiative' || ft === 'Recall') return '<span class="source-badge traditional">' + ft + '</span>';
+        if (ft === 'Political Action Committee') return '<span class="source-badge traditional">PAC</span>';
+        return '<span class="source-badge traditional">Traditional</span>';
+    }
+
     function renderTable(committees) {
         const body = document.getElementById('candidate-body');
-        const maxRaised = Math.max(...committees.map(c => c.total_raised), 1);
-        const maxSpent = Math.max(...committees.map(c => c.total_spent), 1);
+        const maxMoney = Math.max(...committees.map(c => c.total_raised), 1);
 
         const sorted = [...committees].sort((a, b) => b.total_raised - a.total_raised);
 
         body.innerHTML = sorted.map((c, i) => {
             const displayName = c.candidate_name || c.committee_name;
-            const raisedPct = (c.total_raised / maxRaised * 100).toFixed(1);
-            const spentPct = (c.total_spent / maxSpent * 100).toFixed(1);
+            const pct = (c.total_raised / maxMoney * 100).toFixed(1);
             const pl = partyLabel(c.party);
             const pc = partyClass(c.party);
             const partyBadge = pl ? `<span class="party-badge ${pc}">${pl}</span>` : '';
+
+            // Build detail section based on source
+            let detailHTML = '';
+            if (c.filer_type === 'Fair Elections') {
+                const base = c.base_payment || 0;
+                const matching = c.matching_payment || 0;
+                const status = c.certification_status || '';
+                detailHTML = `
+                    <div class="detail-section">
+                        <h4>Fair Elections Public Financing</h4>
+                        <ul class="detail-list">
+                            <li><span class="name">Certification</span><span class="amt">${status}</span></li>
+                            <li><span class="name">Base payment</span><span class="amt">${fmtFull(base)}</span></li>
+                            <li><span class="name">Matching funds (5:1)</span><span class="amt">${fmtFull(matching)}</span></li>
+                            <li><span class="name"><strong>Total public funds</strong></span><span class="amt"><strong>${fmtFull(c.total_raised)}</strong></span></li>
+                        </ul>
+                    </div>
+                `;
+            } else if (c.filer_type === 'FEC') {
+                const coh = c.cash_on_hand || 0;
+                detailHTML = `
+                    <div class="detail-section">
+                        <h4>FEC Filings</h4>
+                        <ul class="detail-list">
+                            <li><span class="name">Total raised</span><span class="amt">${fmtFull(c.total_raised)}</span></li>
+                            <li><span class="name">Total spent</span><span class="amt">${fmtFull(c.total_spent)}</span></li>
+                            <li><span class="name">Cash on hand</span><span class="amt">${fmtFull(coh)}</span></li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                detailHTML = `
+                    <div class="detail-section">
+                        <h4>Top Donors</h4>
+                        <ul class="detail-list">
+                            ${(c.top_donors || []).map(d => `
+                                <li><span class="name">${d.name}</span><span class="amt">${fmtFull(d.total)}</span></li>
+                            `).join('') || '<li><span class="name">No contributions reported</span></li>'}
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Spending by Purpose</h4>
+                        <ul class="detail-list">
+                            ${(c.spending_by_purpose || []).slice(0, 5).map(s => `
+                                <li><span class="name">${s.purpose}</span><span class="amt">${fmtFull(s.total)}</span></li>
+                            `).join('') || '<li><span class="name">No expenditures reported</span></li>'}
+                        </ul>
+                    </div>
+                `;
+            }
 
             return `
                 <tr>
@@ -378,44 +450,16 @@
                     <td class="num">${fmtFull(c.total_raised)}</td>
                     <td class="bar-cell">
                         <div class="bar-wrapper">
-                            <div class="bar raised" style="width:${raisedPct}%"></div>
-                            <span class="bar-label">${c.num_contributions}</span>
+                            <div class="bar raised" style="width:${pct}%"></div>
                         </div>
                     </td>
-                    <td class="num">${fmtFull(c.total_spent)}</td>
-                    <td class="bar-cell">
-                        <div class="bar-wrapper">
-                            <div class="bar spent" style="width:${spentPct}%"></div>
-                            <span class="bar-label">${c.num_expenditures}</span>
-                        </div>
-                    </td>
+                    <td>${sourceLabel(c)}</td>
                 </tr>
                 <tr class="expanded-row" id="detail-row-${i}" style="display:none">
-                    <td colspan="5">
+                    <td colspan="4">
                         <div class="detail-panel open">
                             <div class="detail-grid">
-                                <div class="detail-section">
-                                    <h4>Top Donors</h4>
-                                    <ul class="detail-list">
-                                        ${(c.top_donors || []).map(d => `
-                                            <li>
-                                                <span class="name">${d.name}</span>
-                                                <span class="amt">${fmtFull(d.total)}</span>
-                                            </li>
-                                        `).join('') || '<li><span class="name">No contributions</span></li>'}
-                                    </ul>
-                                </div>
-                                <div class="detail-section">
-                                    <h4>Spending by Purpose</h4>
-                                    <ul class="detail-list">
-                                        ${(c.spending_by_purpose || []).slice(0, 5).map(s => `
-                                            <li>
-                                                <span class="name">${s.purpose}</span>
-                                                <span class="amt">${fmtFull(s.total)}</span>
-                                            </li>
-                                        `).join('') || '<li><span class="name">No expenditures</span></li>'}
-                                    </ul>
-                                </div>
+                                ${detailHTML}
                             </div>
                         </div>
                     </td>
