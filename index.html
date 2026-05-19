@@ -297,7 +297,6 @@
         'Mayor',
         'Attorney General',
         'Council Chairperson',
-        'Council Chairman',
         'Council At-Large',
         'Council Ward 1',
         'Council Ward 3',
@@ -307,25 +306,50 @@
         'US House (DC Delegate)',
         'US Senator',
         'US Representative',
+        'State Board of Education',
         'Independent Expenditure Committees',
         'Initiatives & Ballot Measures',
         'Other Committees',
     ];
 
     const RACE_GROUPS = {
-        'Independent Expenditure Committees': c => c.office === 'No Office' && c.filer_type === 'Independent Expenditure Committee',
-        'Initiatives & Ballot Measures': c => c.office === 'No Office' && (c.filer_type === 'Initiative' || c.filer_type === 'Recall'),
-        'Other Committees': c => ['Supporting', 'No Office', 'Democratic National Committeeman',
-            'At-Large DC Democratic State Committee', 'Ward 2 of the DC Republican Committee',
-            'Ward 8 DC Democratic State Committee'].includes(c.office)
-            && c.filer_type !== 'Independent Expenditure Committee'
-            && c.filer_type !== 'Initiative' && c.filer_type !== 'Recall',
+        'Independent Expenditure Committees': c => c.filer_type === 'Independent Expenditure Committee',
+        'Initiatives & Ballot Measures': c => c.filer_type === 'Initiative' || c.filer_type === 'Recall',
+        'Other Committees': c => {
+            const o = normalizeOffice(c);
+            return ['Supporting', 'Non Supporting', 'No Office', 'Democratic National Committeeman',
+                'At-Large DC Democratic State Committee', 'Ward 2 of the DC Republican Committee',
+                'Ward 8 DC Democratic State Committee', 'Office'].includes(o)
+                && c.filer_type !== 'Independent Expenditure Committee'
+                && c.filer_type !== 'Initiative' && c.filer_type !== 'Recall';
+        },
     };
+
+    // Normalize office names across sources
+    function normalizeOffice(c) {
+        let o = c.office || '';
+        if (o === 'Council Chairman') return 'Council Chairperson';
+        if (o.startsWith('D.C. State Board of Education')) return 'State Board of Education';
+        return o;
+    }
+
+    // Normalize FEC all-caps names to title case
+    function normalizeName(name) {
+        if (!name) return '';
+        // If ALL CAPS and has comma (FEC format: "LAST, FIRST"), flip and title-case
+        if (name === name.toUpperCase() && name.includes(',')) {
+            const parts = name.split(',').map(s => s.trim());
+            return parts.reverse().map(s =>
+                s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
+            ).join(' ').replace(/\b(Mr|Ms|Mrs|Jr|Sr|Dr|Ii|Iii)\b/gi, m => m.toUpperCase());
+        }
+        return name;
+    }
 
     function getCommitteesForRace(race) {
         if (race === 'All Races') return DATA.committees;
         if (RACE_GROUPS[race]) return DATA.committees.filter(RACE_GROUPS[race]);
-        return DATA.committees.filter(c => c.office === race);
+        return DATA.committees.filter(c => normalizeOffice(c) === race);
     }
 
     function fmt(n) {
@@ -385,7 +409,7 @@
         const sorted = [...committees].sort((a, b) => b.total_raised - a.total_raised);
 
         body.innerHTML = sorted.map((c, i) => {
-            const displayName = c.candidate_name || c.committee_name;
+            const displayName = normalizeName(c.candidate_name) || c.committee_name;
             const pct = (c.total_raised / maxMoney * 100).toFixed(1);
             const pl = partyLabel(c.party);
             const pc = partyClass(c.party);
@@ -505,7 +529,8 @@
         const select = document.getElementById('race-select');
         const availableRaces = new Set();
         DATA.committees.forEach(c => {
-            if (c.office) availableRaces.add(c.office);
+            const norm = normalizeOffice(c);
+            if (norm) availableRaces.add(norm);
         });
 
         // Add grouped races
