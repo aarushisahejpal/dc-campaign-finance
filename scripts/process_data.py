@@ -313,6 +313,21 @@ def build_site_json(contributions, expenditures, lookup, metadata):
         with open(fec_path) as f:
             fec_raw = json.load(f)
         for fc in fec_raw:
+            # Map FEC top_donors format to site format
+            top_donors = []
+            for d in fc.get("top_donors", []):
+                top_donors.append({
+                    "name": d.get("name", ""),
+                    "total": d.get("total", 0),
+                })
+            # Map FEC expenditures to spending_by_purpose format
+            spending = []
+            for e in fc.get("top_expenditures", []):
+                desc = e.get("description") or e.get("recipient", "")
+                recipient = e.get("recipient", "")
+                label = f"{recipient} — {desc}" if desc and recipient else (desc or recipient)
+                spending.append({"purpose": label, "total": e.get("amount", 0)})
+
             fec_candidates.append({
                 "committee_name": fc.get("name", ""),
                 "candidate_name": fc.get("name", ""),
@@ -324,11 +339,11 @@ def build_site_json(contributions, expenditures, lookup, metadata):
                 "total_spent": fc.get("disbursements", 0),
                 "num_contributions": 0,
                 "num_expenditures": 0,
-                "avg_contribution": 0,
-                "max_contribution": 0,
                 "cash_on_hand": fc.get("cash_on_hand", 0),
-                "top_donors": [],
-                "spending_by_purpose": [],
+                "dc_contributions": fc.get("dc_contributions", 0),
+                "out_of_dc_contributions": fc.get("out_of_dc_contributions", 0),
+                "top_donors": top_donors,
+                "spending_by_purpose": spending,
             })
         print(f"  FEC candidates: {len(fec_candidates)}")
 

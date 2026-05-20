@@ -135,7 +135,11 @@ def main():
     fec_candidates = []
     for c in candidates:
         t = totals_lookup.get(c["candidate_id"], {})
-        fec_candidates.append({
+        committee_id = ""
+        if c.get("principal_committees"):
+            committee_id = c["principal_committees"][0].get("committee_id", "")
+
+        entry = {
             "candidate_id": c["candidate_id"],
             "name": c["name"],
             "office": c["office_full"],
@@ -146,11 +150,64 @@ def main():
             "disbursements": float(t.get("disbursements") or 0),
             "cash_on_hand": float(t.get("cash_on_hand_end_period") or 0),
             "individual_contributions": float(t.get("individual_itemized_contributions") or 0),
-            "committee_id": (c.get("principal_committees") or [{}])[0].get("committee_id", "")
-                if c.get("principal_committees") else "",
-        })
+            "committee_id": committee_id,
+            "top_donors": [],
+            "top_expenditures": [],
+            "dc_contributions": 0,
+            "out_of_dc_contributions": 0,
+        }
 
-    # Sort by receipts
+        # Pull detail for candidates with a committee and money
+        if committee_id and entry["receipts"] > 0:
+            print(f"  Detail for {c['name']}...", end=" ", flush=True)
+            try:
+                # Top 5 donors
+                r_a = requests.get(f"{FEC_BASE}/schedules/schedule_a/", params={
+                    "api_key": FEC_API_KEY, "committee_id": committee_id,
+                    "two_year_transaction_period": 2026,
+                    "sort": "-contribution_receipt_amount", "per_page": 5,
+                }, timeout=30)
+                if r_a.status_code == 200:
+                    for d in r_a.json().get("results", []):
+                        entry["top_donors"].append({
+                            "name": d.get("contributor_name", ""),
+                            "total": d.get("contribution_receipt_amount", 0),
+                            "state": d.get("contributor_state", ""),
+                            "employer": d.get("contributor_employer", ""),
+                        })
+
+                # By state
+                r_s = requests.get(f"{FEC_BASE}/schedules/schedule_a/by_state/", params={
+                    "api_key": FEC_API_KEY, "committee_id": committee_id, "cycle": 2026,
+                }, timeout=30)
+                if r_s.status_code == 200:
+                    for s in r_s.json().get("results", []):
+                        if s["state"] == "DC":
+                            entry["dc_contributions"] = s["total"]
+                        else:
+                            entry["out_of_dc_contributions"] += s["total"]
+
+                # Top 5 expenditures
+                r_b = requests.get(f"{FEC_BASE}/schedules/schedule_b/", params={
+                    "api_key": FEC_API_KEY, "committee_id": committee_id,
+                    "two_year_transaction_period": 2026,
+                    "sort": "-disbursement_amount", "per_page": 5,
+                }, timeout=30)
+                if r_b.status_code == 200:
+                    for e in r_b.json().get("results", []):
+                        entry["top_expenditures"].append({
+                            "recipient": e.get("recipient_name", ""),
+                            "amount": e.get("disbursement_amount", 0),
+                            "description": e.get("disbursement_description", ""),
+                        })
+
+                print("ok")
+                time.sleep(0.5)
+            except Exception as e:
+                print(f"error: {e}")
+
+        fec_candidates.append(entry)
+
     fec_candidates.sort(key=lambda x: -x["receipts"])
 
     # Save JSON

@@ -10,7 +10,47 @@
     "disbursements": 1841.24,
     "cash_on_hand": 3959482.76,
     "individual_contributions": 3960186.0,
-    "committee_id": "C00853739"
+    "committee_id": "C00853739",
+    "top_donors": [
+      {
+        "name": "HENDERSON, CHRISTOPHER",
+        "total": 500.0,
+        "state": "OH",
+        "employer": "LIFE ANEW BEHAVIORAL HEALTH,"
+      },
+      {
+        "name": "CHASE, TRAVIS",
+        "total": 250.0,
+        "state": "DC",
+        "employer": "SELF"
+      },
+      {
+        "name": "BROWN, TODD",
+        "total": 250.0,
+        "state": "TX",
+        "employer": "UNEMPLOYED"
+      },
+      {
+        "name": "BERRY, VALERIE",
+        "total": 250.0,
+        "state": "MD",
+        "employer": "LINCOLN UNIVERSITY PA"
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "RICH TIME PRODUCTIONS",
+        "amount": 900.0,
+        "description": "SOCIAL MEDIA SUPPORT"
+      },
+      {
+        "recipient": "RICH TIME PRODUCTIONS",
+        "amount": 750.0,
+        "description": "SOCIAL MEDIA SUPPORT"
+      }
+    ],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC00196",
@@ -23,7 +63,68 @@
     "disbursements": 431768.16,
     "cash_on_hand": 820659.16,
     "individual_contributions": 1200061.76,
-    "committee_id": "C00922369"
+    "committee_id": "C00922369",
+    "top_donors": [
+      {
+        "name": "PINTO, BROOKE",
+        "total": 10000.0,
+        "state": "TX",
+        "employer": "DC COUNCIL MEMBER"
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 7000.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "SLAINE, MASON",
+        "total": 7000.0,
+        "state": "FL",
+        "employer": "SELF-EMPLOYED"
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 7000.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "GENETSKI, CHRISTIAN",
+        "total": 7000.0,
+        "state": "DC",
+        "employer": "FANDUEL"
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "UPSWING RESEARCH & STRATEGY",
+        "amount": 32500.0,
+        "description": "POLLING"
+      },
+      {
+        "recipient": "VERSUS MEDIA GROUP, LLC",
+        "amount": 25000.0,
+        "description": "VIDEO PRODUCTION SERVICES"
+      },
+      {
+        "recipient": "KINETIC STRATEGIES",
+        "amount": 19490.29,
+        "description": "DIGITAL CONSULTING"
+      },
+      {
+        "recipient": "KINETIC STRATEGIES",
+        "amount": 19000.0,
+        "description": "LIST ACQUISITION"
+      },
+      {
+        "recipient": "KINETIC STRATEGIES",
+        "amount": 11500.0,
+        "description": "LIST ACQUISITION"
+      }
+    ],
+    "dc_contributions": 558226.0,
+    "out_of_dc_contributions": 649135.76
   },
   {
     "candidate_id": "H6DC00170",
@@ -36,7 +137,68 @@
     "disbursements": 286247.16,
     "cash_on_hand": 466584.31,
     "individual_contributions": 628385.7,
-    "committee_id": "C00911842"
+    "committee_id": "C00911842",
+    "top_donors": [
+      {
+        "name": "ZALESNE, KINNEY",
+        "total": 50000.0,
+        "state": "DC",
+        "employer": "ZALESNE, LLC"
+      },
+      {
+        "name": "ZALESNE, KINNEY",
+        "total": 35000.0,
+        "state": "DC",
+        "employer": "ZALESNE, LLC"
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 5000.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "GOLDMAN, KEN",
+        "total": 5000.0,
+        "state": "NY",
+        "employer": "JPMORGAN CHASE"
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 3500.0,
+        "state": "MA",
+        "employer": null
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "HART RESEARCH ASSOCIATES",
+        "amount": 28500.0,
+        "description": "15-MINUTE SURVEY OF 400 DC DEMOCRATIC PRIMARY VOTERS CONDUCTED MARCH 2-4"
+      },
+      {
+        "recipient": "REVERB MEDIA LLC",
+        "amount": 6985.0,
+        "description": "VIDEO PRODUCTION"
+      },
+      {
+        "recipient": "AQUECS INC.",
+        "amount": 5956.0,
+        "description": "YARD SIGNS PRINTING"
+      },
+      {
+        "recipient": "ACTBLUE TECHNICAL SERVICES",
+        "amount": 5782.66,
+        "description": "SERVICE FEE"
+      },
+      {
+        "recipient": "ACTBLUE TECHNICAL SERVICES",
+        "amount": 3608.33,
+        "description": "SERVICE FEE"
+      }
+    ],
+    "dc_contributions": 175594.7,
+    "out_of_dc_contributions": 451691.0
   },
   {
     "candidate_id": "H6DC01079",
@@ -49,7 +211,68 @@
     "disbursements": 340943.89,
     "cash_on_hand": 73488.53,
     "individual_contributions": 328866.0,
-    "committee_id": "C00921502"
+    "committee_id": "C00921502",
+    "top_donors": [
+      {
+        "name": "ACTBLUE",
+        "total": 30269.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 30269.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 30269.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 30269.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 30269.0,
+        "state": "MA",
+        "employer": null
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "THE NOVAMETIS CONSULTANCY, LLC",
+        "amount": 27125.0,
+        "description": "ADMINISTRATIVE AND COMPLIANCE SERVICES"
+      },
+      {
+        "recipient": "THE NOVAMETIS CONSULTANCY, LLC",
+        "amount": 19000.0,
+        "description": "ADMINISTRATIVE AND COMPLIANCE SERVICES"
+      },
+      {
+        "recipient": "DANTES PARTNERS",
+        "amount": 13285.71,
+        "description": "RENT"
+      },
+      {
+        "recipient": "LAKE RESEARCH",
+        "amount": 13200.0,
+        "description": "POLLING SERVICES"
+      },
+      {
+        "recipient": "CRESCENDO CREATIVE",
+        "amount": 12618.0,
+        "description": "VIDEO PRODUCTION SERVICES"
+      }
+    ],
+    "dc_contributions": 211910.0,
+    "out_of_dc_contributions": 115706.0
   },
   {
     "candidate_id": "H6DC01137",
@@ -62,7 +285,68 @@
     "disbursements": 32478.41,
     "cash_on_hand": 84758.28,
     "individual_contributions": 85355.17,
-    "committee_id": "C00938381"
+    "committee_id": "C00938381",
+    "top_donors": [
+      {
+        "name": "JACZKO, GREGORY DR.",
+        "total": 20276.52,
+        "state": "DC",
+        "employer": "SELF EMPLOYED"
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 19650.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 19650.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 19650.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 19650.0,
+        "state": "MA",
+        "employer": null
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "SOBKOVIAK, KEVIN",
+        "amount": 5000.0,
+        "description": "FINANCE CONSULTING"
+      },
+      {
+        "recipient": "BUNDY, GERALD",
+        "amount": 4900.0,
+        "description": "SIGNATURE GATHERING"
+      },
+      {
+        "recipient": "EMBASSY SUITES",
+        "amount": 4720.39,
+        "description": "CAMPAIGN EVENT VENUE"
+      },
+      {
+        "recipient": "IKON GLOBAL CONSULTING INC",
+        "amount": 3000.0,
+        "description": "CAMPAIGN CONSULTING"
+      },
+      {
+        "recipient": "IKON GLOBAL CONSULTING INC",
+        "amount": 3000.0,
+        "description": "CAMPAIGN CONSULTING"
+      }
+    ],
+    "dc_contributions": 25855.17,
+    "out_of_dc_contributions": 59500.0
   },
   {
     "candidate_id": "H0DC00058",
@@ -75,7 +359,68 @@
     "disbursements": 86859.94,
     "cash_on_hand": 0.0,
     "individual_contributions": 1000.0,
-    "committee_id": "C00244335"
+    "committee_id": "C00244335",
+    "top_donors": [
+      {
+        "name": "HOLMES NORTON, ELEANOR",
+        "total": 40000.0,
+        "state": "DC",
+        "employer": "US HOUSE OF REPRESENTATIVES"
+      },
+      {
+        "name": "TRUCKING POLITICAL ACTION COMMITTEE OF THE AMERICAN TRUCKING ASSOCIATIONS INC.",
+        "total": 2500.0,
+        "state": "DC",
+        "employer": null
+      },
+      {
+        "name": "AMALGAMATED TRANSIT UNION COPE",
+        "total": 2500.0,
+        "state": "MD",
+        "employer": null
+      },
+      {
+        "name": "TRANSPORT INTERMEDIARIES ASSOCIATION'S TIAPAC",
+        "total": 2500.0,
+        "state": "VA",
+        "employer": null
+      },
+      {
+        "name": "TRANSPORT WORKERS UNION OF AMERICA POLITICAL CONTRIBUTIONS COMMITTEE",
+        "total": 1500.0,
+        "state": "DC",
+        "employer": null
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "CAPITOL COMPLIANCE ASSOCIATES, INC.",
+        "amount": 7300.0,
+        "description": "COMPLIANCE SERVICES"
+      },
+      {
+        "recipient": "J. POPE CONSULTING, LLC",
+        "amount": 7203.7,
+        "description": "FUNDRAISING CONSULTING SERVICES"
+      },
+      {
+        "recipient": "J. POPE CONSULTING, LLC",
+        "amount": 7203.7,
+        "description": "FUNDRAISING CONSULTING SERVICES"
+      },
+      {
+        "recipient": "J. POPE CONSULTING, LLC",
+        "amount": 7203.7,
+        "description": "FUNDRAISING CONSULTING SERVICES"
+      },
+      {
+        "recipient": "J. POPE CONSULTING, LLC",
+        "amount": 4703.7,
+        "description": "FUNDRAISING CONSULTING SERVICES"
+      }
+    ],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 1000.0
   },
   {
     "candidate_id": "H6DC01053",
@@ -88,7 +433,53 @@
     "disbursements": 430.52,
     "cash_on_hand": 48647.48,
     "individual_contributions": 2700.0,
-    "committee_id": "C00918987"
+    "committee_id": "C00918987",
+    "top_donors": [
+      {
+        "name": "MATTHEWS, ROBERT L",
+        "total": 42000.0,
+        "state": "DC",
+        "employer": "THINK OF US"
+      },
+      {
+        "name": "NORRINGTON, BRYAN",
+        "total": 1500.0,
+        "state": "DC",
+        "employer": "USDA"
+      },
+      {
+        "name": "HALL, LATISHA",
+        "total": 1000.0,
+        "state": "TN",
+        "employer": "ETRO HEALTH DEPT"
+      },
+      {
+        "name": "MYERS, LAMARIOUS",
+        "total": 100.0,
+        "state": "DC",
+        "employer": "THINK OF US"
+      },
+      {
+        "name": "MATTHEWS, ROBERT L",
+        "total": 100.0,
+        "state": "DC",
+        "employer": "THINK OF US"
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "RONTE PHOTOGRAPHY",
+        "amount": 275.0,
+        "description": "PHOTOGRAPHY"
+      },
+      {
+        "recipient": "RONTE PHOTOGRAPHY",
+        "amount": 31.8,
+        "description": "{HOTOGRAPHY"
+      }
+    ],
+    "dc_contributions": 1700.0,
+    "out_of_dc_contributions": 1000.0
   },
   {
     "candidate_id": "H6DC01103",
@@ -101,7 +492,68 @@
     "disbursements": 26798.77,
     "cash_on_hand": 5438.06,
     "individual_contributions": 10950.0,
-    "committee_id": "C00932921"
+    "committee_id": "C00932921",
+    "top_donors": [
+      {
+        "name": "HOLBROOK, TRENT",
+        "total": 10000.0,
+        "state": "DC",
+        "employer": "FRIENDS OF TRENT HOLBROOK"
+      },
+      {
+        "name": "HOLBROOK, JEANIE",
+        "total": 3500.0,
+        "state": "TX",
+        "employer": "N/A"
+      },
+      {
+        "name": "HOLBROOK, DAN",
+        "total": 3500.0,
+        "state": "TX",
+        "employer": "N/A"
+      },
+      {
+        "name": "HOLBROOK, TRENT",
+        "total": 2500.0,
+        "state": "DC",
+        "employer": "FRIENDS OF TRENT HOLBROOK"
+      },
+      {
+        "name": "HOLBROOK, TRENT",
+        "total": 2000.0,
+        "state": "DC",
+        "employer": "FRIENDS OF TRENT HOLBROOK"
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "PTGR STRATEGIES",
+        "amount": 9000.0,
+        "description": "STRATEGIC CONSULTING SERVICES"
+      },
+      {
+        "recipient": "PARK PRESS",
+        "amount": 8176.47,
+        "description": "PRINTING OF CAMPAIGN MATERIALS"
+      },
+      {
+        "recipient": "DC DEMOCRATIC STATE COMMITTEE",
+        "amount": 3000.0,
+        "description": "VOTER FILE ACCESS"
+      },
+      {
+        "recipient": "GRASSROOTS ANALYTICS",
+        "amount": 2000.0,
+        "description": "FUNDRAISING CONSULTING"
+      },
+      {
+        "recipient": "PTGR STRATEGIES",
+        "amount": 1700.0,
+        "description": "STRATEGIC CONSULTING SERVICES"
+      }
+    ],
+    "dc_contributions": 3000.0,
+    "out_of_dc_contributions": 7950.0
   },
   {
     "candidate_id": "H6DC01038",
@@ -114,7 +566,68 @@
     "disbursements": 21805.91,
     "cash_on_hand": 2545.72,
     "individual_contributions": 250.0,
-    "committee_id": "C00915686"
+    "committee_id": "C00915686",
+    "top_donors": [
+      {
+        "name": "CHAFFIN, GORDON",
+        "total": 3000.0,
+        "state": "DC",
+        "employer": "SELF-EMPLOYED"
+      },
+      {
+        "name": "CHAFFIN, GORDON",
+        "total": 2000.0,
+        "state": "DC",
+        "employer": "SELF-EMPLOYED"
+      },
+      {
+        "name": "CHAFFIN, GORDON",
+        "total": 1900.0,
+        "state": "DC",
+        "employer": "SELF-EMPLOYED"
+      },
+      {
+        "name": "CHAFFIN, GORDON",
+        "total": 1900.0,
+        "state": "DC",
+        "employer": "SELF-EMPLOYED"
+      },
+      {
+        "name": "CHAFFIN, GORDON",
+        "total": 1900.0,
+        "state": "DC",
+        "employer": "SELF-EMPLOYED"
+      }
+    ],
+    "top_expenditures": [
+      {
+        "recipient": "DC DEMOCRATIC STATE COMMITTEE",
+        "amount": 3000.0,
+        "description": "ONE-TIME DONATION TO D.C. DEMS FOR VOTEBUILDER TOOL"
+      },
+      {
+        "recipient": "EVERYACTION, INC. D/B/A NGP VAN",
+        "amount": 1702.94,
+        "description": "NGP VAN PMT OCT25"
+      },
+      {
+        "recipient": "EVERYACTION, INC. D/B/A NGP VAN",
+        "amount": 1694.94,
+        "description": "NGP + MOBILIZE MONTHLY BILL FOR MAR 2026"
+      },
+      {
+        "recipient": "EVERYACTION, INC. D/B/A NGP VAN",
+        "amount": 1694.94,
+        "description": "NGP + MOBILIZE MONTHLY BILL FOR FEB 2026"
+      },
+      {
+        "recipient": "EVERYACTION, INC. D/B/A NGP VAN",
+        "amount": 1694.94,
+        "description": "NGP + MOBILIZE MONTHLY BILL FOR JAN 2026"
+      }
+    ],
+    "dc_contributions": 250.0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01111",
@@ -127,7 +640,42 @@
     "disbursements": 467.19,
     "cash_on_hand": 5247.8,
     "individual_contributions": 250.0,
-    "committee_id": "C00934083"
+    "committee_id": "C00934083",
+    "top_donors": [
+      {
+        "name": "ROSADO, DENISE",
+        "total": 5000.0,
+        "state": "DC",
+        "employer": "DENISE ROSADO PLLC"
+      },
+      {
+        "name": "TOWNSEND, DESIREE",
+        "total": 500.0,
+        "state": "DC",
+        "employer": "ATTORNEY"
+      },
+      {
+        "name": "TOWNSEND, DESIREE",
+        "total": 500.0,
+        "state": "DC",
+        "employer": "ATTORNEY"
+      },
+      {
+        "name": "PHILLIPS, RONALD S",
+        "total": 250.0,
+        "state": "DC",
+        "employer": null
+      },
+      {
+        "name": "ROSADO, DENISE",
+        "total": 100.0,
+        "state": "DC",
+        "employer": "DENISE ROSADO PLLC"
+      }
+    ],
+    "top_expenditures": [],
+    "dc_contributions": 250.0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC00188",
@@ -140,7 +688,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00919407"
+    "committee_id": "C00919407",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC00212",
@@ -153,7 +705,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00933523"
+    "committee_id": "C00933523",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H4DC00100",
@@ -166,7 +722,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00866863"
+    "committee_id": "C00866863",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01145",
@@ -179,7 +739,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": ""
+    "committee_id": "",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H0DC01023",
@@ -192,7 +756,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00909382"
+    "committee_id": "C00909382",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01020",
@@ -205,7 +773,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": ""
+    "committee_id": "",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC00204",
@@ -218,7 +790,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00929448"
+    "committee_id": "C00929448",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01061",
@@ -231,7 +807,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00920249"
+    "committee_id": "C00920249",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01129",
@@ -244,7 +824,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00922286"
+    "committee_id": "C00922286",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01087",
@@ -257,7 +841,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00922005"
+    "committee_id": "C00922005",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H4DC00092",
@@ -270,7 +858,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00809319"
+    "committee_id": "C00809319",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01012",
@@ -283,7 +875,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00891762"
+    "committee_id": "C00891762",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01095",
@@ -296,7 +892,11 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": ""
+    "committee_id": "",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC98018",
@@ -309,6 +909,10 @@
     "disbursements": 0.0,
     "cash_on_hand": 0.0,
     "individual_contributions": 0.0,
-    "committee_id": "C00939066"
+    "committee_id": "C00939066",
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   }
 ]
