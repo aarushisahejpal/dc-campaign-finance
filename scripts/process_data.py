@@ -261,15 +261,27 @@ def build_site_json(contributions, expenditures, lookup, metadata):
         c = pd.concat(c_frames) if c_frames else pd.DataFrame()
         e = pd.concat(e_frames) if e_frames else pd.DataFrame()
 
-        # Top 5 donors
+        # Top 10 donors (includes individuals, corporations, labor, PACs)
         top_donors = []
         if not c.empty:
             dc = c.copy()
             dc["donor"] = (c["Contributor First Name"].fillna("") + " " + c["Contributor Last Name"].fillna("")).str.strip()
             mask = c["Contributor Organization Name"].fillna("").str.strip() != ""
             dc.loc[mask, "donor"] = c.loc[mask, "Contributor Organization Name"]
-            top5 = dc.groupby("donor")["amount_clean"].sum().sort_values(ascending=False).head(5)
-            top_donors = [{"name": n, "total": round(v, 2)} for n, v in top5.items()]
+            top10 = dc.groupby("donor").agg(
+                total=("amount_clean", "sum"),
+                contributor_type=("Contributor Type", "first"),
+                state=("State", "first"),
+            ).sort_values("total", ascending=False).head(10)
+            for name, row in top10.iterrows():
+                if not name:
+                    continue
+                top_donors.append({
+                    "name": name,
+                    "total": round(row["total"], 2),
+                    "type": row.get("contributor_type", ""),
+                    "state": row.get("state", ""),
+                })
 
         # Spending by purpose
         spending = []

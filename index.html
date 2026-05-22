@@ -451,10 +451,11 @@
             // Top donors (shown for OCF traditional, Fair Elections, and FEC)
             const donorList = (c.top_donors || []).length > 0 ? `
                 <div class="detail-section">
-                    <h4>Top Individual Donors</h4>
+                    <h4>Top Donors</h4>
                     <ul class="detail-list">
                         ${c.top_donors.map(d => {
-                            const sub = [d.state, d.employer].filter(Boolean).join(' · ');
+                            const parts = [d.type, d.state, d.employer].filter(Boolean);
+                            const sub = parts.join(' · ');
                             const subLine = sub ? `<div style="font-size:0.72rem;color:#999;margin-top:1px">${sub}</div>` : '';
                             return `<li><span class="name">${d.name}${subLine}</span><span class="amt">${fmtFull(d.total)}</span></li>`;
                         }).join('')}
