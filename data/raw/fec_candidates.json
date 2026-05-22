@@ -11,7 +11,6 @@
     "cash_on_hand": 3959482.76,
     "individual_contributions": 3960186.0,
     "committee_id": "C00853739",
-<<<<<<< HEAD
     "top_donors": [
       {
         "name": "HARTSHORN, NANCY",
@@ -70,12 +69,6 @@
     ],
     "dc_contributions": 75.0,
     "out_of_dc_contributions": 3958861.0
-=======
-    "top_donors": [],
-    "top_expenditures": [],
-    "dc_contributions": 0,
-    "out_of_dc_contributions": 0
->>>>>>> 40af8c64d833c2930c4a275c4fc53ba759b9bc2a
   },
   {
     "candidate_id": "H6DC00196",
@@ -89,7 +82,6 @@
     "cash_on_hand": 820659.16,
     "individual_contributions": 1200061.76,
     "committee_id": "C00922369",
-<<<<<<< HEAD
     "top_donors": [
       {
         "name": "PINTO, BROOKE",
@@ -181,12 +173,6 @@
     ],
     "dc_contributions": 558226.0,
     "out_of_dc_contributions": 649135.76
-=======
-    "top_donors": [],
-    "top_expenditures": [],
-    "dc_contributions": 0,
-    "out_of_dc_contributions": 0
->>>>>>> 40af8c64d833c2930c4a275c4fc53ba759b9bc2a
   },
   {
     "candidate_id": "H6DC00170",
@@ -200,7 +186,6 @@
     "cash_on_hand": 466584.31,
     "individual_contributions": 628385.7,
     "committee_id": "C00911842",
-<<<<<<< HEAD
     "top_donors": [
       {
         "name": "ZALESNE, KINNEY",
@@ -292,12 +277,6 @@
     ],
     "dc_contributions": 175594.7,
     "out_of_dc_contributions": 451691.0
-=======
-    "top_donors": [],
-    "top_expenditures": [],
-    "dc_contributions": 0,
-    "out_of_dc_contributions": 0
->>>>>>> 40af8c64d833c2930c4a275c4fc53ba759b9bc2a
   },
   {
     "candidate_id": "H6DC01079",
@@ -312,7 +291,6 @@
     "individual_contributions": 328866.0,
     "committee_id": "C00921502",
     "top_donors": [],
-<<<<<<< HEAD
     "top_expenditures": [
       {
         "recipient": "THE NOVAMETIS CONSULTANCY, LLC",
@@ -342,11 +320,6 @@
     ],
     "dc_contributions": 211910.0,
     "out_of_dc_contributions": 115706.0
-=======
-    "top_expenditures": [],
-    "dc_contributions": 0,
-    "out_of_dc_contributions": 0
->>>>>>> 40af8c64d833c2930c4a275c4fc53ba759b9bc2a
   },
   {
     "candidate_id": "H6DC01137",
@@ -422,7 +395,33 @@
         "employer": "MAYER BROWN LLP"
       }
     ],
-    "top_expenditures": [],
+    "top_expenditures": [
+      {
+        "recipient": "SOBKOVIAK, KEVIN",
+        "amount": 5000.0,
+        "description": "FINANCE CONSULTING"
+      },
+      {
+        "recipient": "BUNDY, GERALD",
+        "amount": 4900.0,
+        "description": "SIGNATURE GATHERING"
+      },
+      {
+        "recipient": "EMBASSY SUITES",
+        "amount": 4720.39,
+        "description": "CAMPAIGN EVENT VENUE"
+      },
+      {
+        "recipient": "IKON GLOBAL CONSULTING INC",
+        "amount": 3000.0,
+        "description": "CAMPAIGN CONSULTING"
+      },
+      {
+        "recipient": "IKON GLOBAL CONSULTING INC",
+        "amount": 3000.0,
+        "description": "CAMPAIGN CONSULTING"
+      }
+    ],
     "dc_contributions": 25855.17,
     "out_of_dc_contributions": 59500.0
   },
@@ -438,7 +437,6 @@
     "cash_on_hand": 0.0,
     "individual_contributions": 1000.0,
     "committee_id": "C00244335",
-<<<<<<< HEAD
     "top_donors": [
       {
         "name": "HOLMES NORTON, ELEANOR",
@@ -522,12 +520,8 @@
         "description": "FUNDRAISING CONSULTING SERVICES"
       }
     ],
-=======
-    "top_donors": [],
-    "top_expenditures": [],
->>>>>>> 40af8c64d833c2930c4a275c4fc53ba759b9bc2a
     "dc_contributions": 0,
-    "out_of_dc_contributions": 0
+    "out_of_dc_contributions": 1000.0
   },
   {
     "candidate_id": "H6DC01053",
@@ -567,9 +561,20 @@
         "employer": "THINK OF US"
       }
     ],
-    "top_expenditures": [],
-    "dc_contributions": 0,
-    "out_of_dc_contributions": 0
+    "top_expenditures": [
+      {
+        "recipient": "RONTE PHOTOGRAPHY",
+        "amount": 275.0,
+        "description": "PHOTOGRAPHY"
+      },
+      {
+        "recipient": "RONTE PHOTOGRAPHY",
+        "amount": 31.8,
+        "description": "{HOTOGRAPHY"
+      }
+    ],
+    "dc_contributions": 1700.0,
+    "out_of_dc_contributions": 1000.0
   },
   {
     "candidate_id": "H6DC01103",
@@ -687,54 +692,9 @@
     "cash_on_hand": 2545.72,
     "individual_contributions": 250.0,
     "committee_id": "C00915686",
-    "top_donors": [
-      {
-        "name": "CHAFFIN, GORDON",
-        "total": 22547.54,
-        "state": "DC",
-        "employer": "SELF-EMPLOYED"
-      },
-      {
-        "name": "METROBAR",
-        "total": 255.0,
-        "state": "DC",
-        "employer": ""
-      },
-      {
-        "name": "FRAZIER, NICK 611",
-        "total": 250.0,
-        "state": "DC",
-        "employer": "FEDERAL DEPOSIT INSURANCE CORP"
-      }
-    ],
-    "top_expenditures": [
-      {
-        "recipient": "DC DEMOCRATIC STATE COMMITTEE",
-        "amount": 3000.0,
-        "description": "ONE-TIME DONATION TO D.C. DEMS FOR VOTEBUILDER TOOL"
-      },
-      {
-        "recipient": "EVERYACTION, INC. D/B/A NGP VAN",
-        "amount": 1702.94,
-        "description": "NGP VAN PMT OCT25"
-      },
-      {
-        "recipient": "EVERYACTION, INC. D/B/A NGP VAN",
-        "amount": 1694.94,
-        "description": "NGP + MOBILIZE MONTHLY BILL FOR MAR 2026"
-      },
-      {
-        "recipient": "EVERYACTION, INC. D/B/A NGP VAN",
-        "amount": 1694.94,
-        "description": "NGP + MOBILIZE MONTHLY BILL FOR FEB 2026"
-      },
-      {
-        "recipient": "EVERYACTION, INC. D/B/A NGP VAN",
-        "amount": 1694.94,
-        "description": "NGP + MOBILIZE MONTHLY BILL FOR JAN 2026"
-      }
-    ],
-    "dc_contributions": 250.0,
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
     "out_of_dc_contributions": 0
   },
   {
@@ -749,7 +709,6 @@
     "cash_on_hand": 5247.8,
     "individual_contributions": 250.0,
     "committee_id": "C00934083",
-<<<<<<< HEAD
     "top_donors": [
       {
         "name": "ROSADO, DENISE",
@@ -770,11 +729,8 @@
         "employer": "ATTORNEY"
       }
     ],
-=======
-    "top_donors": [],
->>>>>>> 40af8c64d833c2930c4a275c4fc53ba759b9bc2a
     "top_expenditures": [],
-    "dc_contributions": 0,
+    "dc_contributions": 250.0,
     "out_of_dc_contributions": 0
   },
   {
