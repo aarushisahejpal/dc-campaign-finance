@@ -170,13 +170,15 @@ def main():
                 if r_a.status_code == 200:
                     from collections import defaultdict
                     agg = defaultdict(lambda: {"total": 0, "count": 0,
-                                               "state": "", "employer": ""})
+                                               "state": "", "employer": "",
+                                               "entity_type": ""})
                     for d in r_a.json().get("results", []):
                         name = d.get("contributor_name", "")
                         agg[name]["total"] += d.get("contribution_receipt_amount", 0)
                         agg[name]["count"] += 1
                         agg[name]["state"] = d.get("contributor_state", "")
                         agg[name]["employer"] = d.get("contributor_employer", "") or ""
+                        agg[name]["entity_type"] = d.get("entity_type_desc", "") or ""
                     top = sorted(agg.items(), key=lambda x: -x[1]["total"])
                     # Skip ACTBLUE (pass-through processor, not a real donor)
                     for name, info in top:
@@ -189,6 +191,7 @@ def main():
                             "total": round(info["total"], 2),
                             "state": info["state"],
                             "employer": info["employer"],
+                            "type": info.get("entity_type", ""),
                         })
 
                 # By state
