@@ -325,12 +325,14 @@ def build_site_json(contributions, expenditures, lookup, metadata):
         with open(fec_path) as f:
             fec_raw = json.load(f)
         for fc in fec_raw:
-            # Map FEC top_donors format to site format
+            # Map FEC top_donors format to site format (keep state + employer)
             top_donors = []
             for d in fc.get("top_donors", []):
                 top_donors.append({
                     "name": d.get("name", ""),
                     "total": d.get("total", 0),
+                    "state": d.get("state", ""),
+                    "employer": d.get("employer", ""),
                 })
             # Map FEC expenditures to spending_by_purpose format
             spending = []
