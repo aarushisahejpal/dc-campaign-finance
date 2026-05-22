@@ -154,6 +154,15 @@
             color: var(--accent);
         }
         .candidate-name:hover { text-decoration: underline; }
+        .candidate-name::after {
+            content: ' +';
+            font-weight: 400;
+            font-size: 0.75em;
+            color: var(--text-muted);
+        }
+        tr.is-open .candidate-name::after {
+            content: ' −';
+        }
         .party-badge {
             display: inline-block;
             font-size: 0.65rem;
@@ -439,14 +448,16 @@
                 </div>
             ` : '';
 
-            // Top donors (shown for OCF traditional and Fair Elections)
+            // Top donors (shown for OCF traditional, Fair Elections, and FEC)
             const donorList = (c.top_donors || []).length > 0 ? `
                 <div class="detail-section">
                     <h4>Top Individual Donors</h4>
                     <ul class="detail-list">
-                        ${c.top_donors.map(d => `
-                            <li><span class="name">${d.name}</span><span class="amt">${fmtFull(d.total)}</span></li>
-                        `).join('')}
+                        ${c.top_donors.map(d => {
+                            const sub = [d.state, d.employer].filter(Boolean).join(' · ');
+                            const subLine = sub ? `<div style="font-size:0.72rem;color:#999;margin-top:1px">${sub}</div>` : '';
+                            return `<li><span class="name">${d.name}${subLine}</span><span class="amt">${fmtFull(d.total)}</span></li>`;
+                        }).join('')}
                     </ul>
                 </div>
             ` : '';
@@ -536,7 +547,10 @@
 
     function toggleDetail(idx) {
         const row = document.getElementById(`detail-row-${idx}`);
-        row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+        const mainRow = row.previousElementSibling;
+        const isOpen = row.style.display !== 'none';
+        row.style.display = isOpen ? 'none' : 'table-row';
+        mainRow.classList.toggle('is-open', !isOpen);
     }
 
     function onRaceChange() {

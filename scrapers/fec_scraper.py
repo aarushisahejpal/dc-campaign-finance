@@ -161,19 +161,34 @@ def main():
         if committee_id and entry["receipts"] > 0:
             print(f"  Detail for {c['name']}...", end=" ", flush=True)
             try:
-                # Top 5 donors
+                # Get top 100 transactions and aggregate by donor name
                 r_a = requests.get(f"{FEC_BASE}/schedules/schedule_a/", params={
                     "api_key": FEC_API_KEY, "committee_id": committee_id,
                     "two_year_transaction_period": 2026,
-                    "sort": "-contribution_receipt_amount", "per_page": 5,
+                    "sort": "-contribution_receipt_amount", "per_page": 100,
                 }, timeout=30)
                 if r_a.status_code == 200:
+                    from collections import defaultdict
+                    agg = defaultdict(lambda: {"total": 0, "count": 0,
+                                               "state": "", "employer": ""})
                     for d in r_a.json().get("results", []):
+                        name = d.get("contributor_name", "")
+                        agg[name]["total"] += d.get("contribution_receipt_amount", 0)
+                        agg[name]["count"] += 1
+                        agg[name]["state"] = d.get("contributor_state", "")
+                        agg[name]["employer"] = d.get("contributor_employer", "") or ""
+                    top = sorted(agg.items(), key=lambda x: -x[1]["total"])
+                    # Skip ACTBLUE (pass-through processor, not a real donor)
+                    for name, info in top:
+                        if "ACTBLUE" in name.upper():
+                            continue
+                        if len(entry["top_donors"]) >= 10:
+                            break
                         entry["top_donors"].append({
-                            "name": d.get("contributor_name", ""),
-                            "total": d.get("contribution_receipt_amount", 0),
-                            "state": d.get("contributor_state", ""),
-                            "employer": d.get("contributor_employer", ""),
+                            "name": name,
+                            "total": round(info["total"], 2),
+                            "state": info["state"],
+                            "employer": info["employer"],
                         })
 
                 # By state
