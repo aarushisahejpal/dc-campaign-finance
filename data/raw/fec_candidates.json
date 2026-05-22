@@ -79,10 +79,41 @@
     "cash_on_hand": 84758.28,
     "individual_contributions": 85355.17,
     "committee_id": "C00938381",
-    "top_donors": [],
+    "top_donors": [
+      {
+        "name": "JACZKO, GREGORY DR.",
+        "total": 20276.52,
+        "state": "DC",
+        "employer": "SELF EMPLOYED"
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 19650.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 19650.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 19650.0,
+        "state": "MA",
+        "employer": null
+      },
+      {
+        "name": "ACTBLUE",
+        "total": 19650.0,
+        "state": "MA",
+        "employer": null
+      }
+    ],
     "top_expenditures": [],
-    "dc_contributions": 0,
-    "out_of_dc_contributions": 0
+    "dc_contributions": 25855.17,
+    "out_of_dc_contributions": 59500.0
   },
   {
     "candidate_id": "H0DC00058",
@@ -113,7 +144,38 @@
     "cash_on_hand": 48647.48,
     "individual_contributions": 2700.0,
     "committee_id": "C00918987",
-    "top_donors": [],
+    "top_donors": [
+      {
+        "name": "MATTHEWS, ROBERT L",
+        "total": 42000.0,
+        "state": "DC",
+        "employer": "THINK OF US"
+      },
+      {
+        "name": "NORRINGTON, BRYAN",
+        "total": 1500.0,
+        "state": "DC",
+        "employer": "USDA"
+      },
+      {
+        "name": "HALL, LATISHA",
+        "total": 1000.0,
+        "state": "TN",
+        "employer": "ETRO HEALTH DEPT"
+      },
+      {
+        "name": "MYERS, LAMARIOUS",
+        "total": 100.0,
+        "state": "DC",
+        "employer": "THINK OF US"
+      },
+      {
+        "name": "MATTHEWS, ROBERT L",
+        "total": 100.0,
+        "state": "DC",
+        "employer": "THINK OF US"
+      }
+    ],
     "top_expenditures": [],
     "dc_contributions": 0,
     "out_of_dc_contributions": 0
