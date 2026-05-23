@@ -11,71 +11,10 @@
     "cash_on_hand": 3959482.76,
     "individual_contributions": 3960186.0,
     "committee_id": "C00853739",
-    "top_donors": [
-      {
-        "name": "HARTSHORN, NANCY",
-        "total": 3958610.0,
-        "state": "CA",
-        "employer": "UNEMPLOYED",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "HENDERSON, CHRISTOPHER",
-        "total": 500.0,
-        "state": "OH",
-        "employer": "LIFE ANEW BEHAVIORAL HEALTH,",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "IRVING, KWASI",
-        "total": 251.0,
-        "state": "MD",
-        "employer": "IRVING ASSET MANAGEMENT",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "CHASE, TRAVIS",
-        "total": 250.0,
-        "state": "DC",
-        "employer": "SELF",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "BROWN, TODD",
-        "total": 250.0,
-        "state": "TX",
-        "employer": "UNEMPLOYED",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "BERRY, VALERIE",
-        "total": 250.0,
-        "state": "MD",
-        "employer": "LINCOLN UNIVERSITY PA",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "SIDNEY, ARTHUR",
-        "total": 75.0,
-        "state": "DC",
-        "employer": "SELF",
-        "type": "INDIVIDUAL"
-      }
-    ],
-    "top_expenditures": [
-      {
-        "recipient": "RICH TIME PRODUCTIONS",
-        "amount": 900.0,
-        "description": "SOCIAL MEDIA SUPPORT"
-      },
-      {
-        "recipient": "RICH TIME PRODUCTIONS",
-        "amount": 750.0,
-        "description": "SOCIAL MEDIA SUPPORT"
-      }
-    ],
-    "dc_contributions": 75.0,
-    "out_of_dc_contributions": 3958861.0
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC00196",
@@ -89,107 +28,10 @@
     "cash_on_hand": 820659.16,
     "individual_contributions": 1200061.76,
     "committee_id": "C00922369",
-    "top_donors": [
-      {
-        "name": "PINTO, BROOKE",
-        "total": 10000.0,
-        "state": "TX",
-        "employer": "DC COUNCIL MEMBER",
-        "type": "CANDIDATE"
-      },
-      {
-        "name": "CHHABRA, SUNIL",
-        "total": 10000.0,
-        "state": "MD",
-        "employer": "ONE STREET COMMERCIAL PROPERTIES",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "SLAINE, MASON",
-        "total": 7000.0,
-        "state": "FL",
-        "employer": "SELF-EMPLOYED",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "GENETSKI, CHRISTIAN",
-        "total": 7000.0,
-        "state": "DC",
-        "employer": "FANDUEL",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "PINTO, CAREN",
-        "total": 7000.0,
-        "state": "CT",
-        "employer": "NEWS 12",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "PARTICELLI, MARC",
-        "total": 7000.0,
-        "state": "FL",
-        "employer": "N/A",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "COLEMAN, WILLIAM",
-        "total": 7000.0,
-        "state": "CO",
-        "employer": "N/A",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "CAFRITZ, JANE",
-        "total": 7000.0,
-        "state": "DC",
-        "employer": "CALVIN CAFRITZ ENTERPRISES",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "BLAIR, DAVID",
-        "total": 7000.0,
-        "state": "MD",
-        "employer": "LUCYRX",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "BERADINO, JOSEPH",
-        "total": 5000.0,
-        "state": "CT",
-        "employer": "ALVAREZ & MARSAL",
-        "type": "INDIVIDUAL"
-      }
-    ],
-    "top_expenditures": [
-      {
-        "recipient": "UPSWING RESEARCH & STRATEGY",
-        "amount": 32500.0,
-        "description": "POLLING"
-      },
-      {
-        "recipient": "VERSUS MEDIA GROUP, LLC",
-        "amount": 25000.0,
-        "description": "VIDEO PRODUCTION SERVICES"
-      },
-      {
-        "recipient": "KINETIC STRATEGIES",
-        "amount": 19490.29,
-        "description": "DIGITAL CONSULTING"
-      },
-      {
-        "recipient": "KINETIC STRATEGIES",
-        "amount": 19000.0,
-        "description": "LIST ACQUISITION"
-      },
-      {
-        "recipient": "KINETIC STRATEGIES",
-        "amount": 11500.0,
-        "description": "LIST ACQUISITION"
-      }
-    ],
-    "dc_contributions": 558226.0,
-    "out_of_dc_contributions": 649135.76
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC00170",
@@ -203,107 +45,10 @@
     "cash_on_hand": 466584.31,
     "individual_contributions": 628385.7,
     "committee_id": "C00911842",
-    "top_donors": [
-      {
-        "name": "ZALESNE, KINNEY",
-        "total": 85000.0,
-        "state": "DC",
-        "employer": "ZALESNE, LLC",
-        "type": "CANDIDATE"
-      },
-      {
-        "name": "WEBBER, JOHN",
-        "total": 7000.0,
-        "state": "DC",
-        "employer": "NOT EMPLOYED",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "WEBBER, DIANE",
-        "total": 7000.0,
-        "state": "DC",
-        "employer": "FXC INTELLIGENCE LLC",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "SIFF, SCOTT",
-        "total": 7000.0,
-        "state": "DC",
-        "employer": "QUADRANT STRATEGIES",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "SCHUSTERMAN, STACY",
-        "total": 7000.0,
-        "state": "OK",
-        "employer": "SCHUSTERMAN INTERESTS LLC",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "GOLDBERG, CHAD",
-        "total": 7000.0,
-        "state": "MD",
-        "employer": "MARSHFIELD ASSOCIATES",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "ZALESNE, JUDY",
-        "total": 7000.0,
-        "state": "PA",
-        "employer": "N/A",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "ZALESNE, HARVEY",
-        "total": 7000.0,
-        "state": "PA",
-        "employer": "N/A",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "WHITE, JULIA",
-        "total": 7000.0,
-        "state": "WA",
-        "employer": "MICROSOFT",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "WACHS, JOSHUA",
-        "total": 7000.0,
-        "state": "DC",
-        "employer": "THE LEVINSON GROUP",
-        "type": "INDIVIDUAL"
-      }
-    ],
-    "top_expenditures": [
-      {
-        "recipient": "HART RESEARCH ASSOCIATES",
-        "amount": 28500.0,
-        "description": "15-MINUTE SURVEY OF 400 DC DEMOCRATIC PRIMARY VOTERS CONDUCTED MARCH 2-4"
-      },
-      {
-        "recipient": "REVERB MEDIA LLC",
-        "amount": 6985.0,
-        "description": "VIDEO PRODUCTION"
-      },
-      {
-        "recipient": "AQUECS INC.",
-        "amount": 5956.0,
-        "description": "YARD SIGNS PRINTING"
-      },
-      {
-        "recipient": "ACTBLUE TECHNICAL SERVICES",
-        "amount": 5782.66,
-        "description": "SERVICE FEE"
-      },
-      {
-        "recipient": "ACTBLUE TECHNICAL SERVICES",
-        "amount": 3608.33,
-        "description": "SERVICE FEE"
-      }
-    ],
-    "dc_contributions": 175594.7,
-    "out_of_dc_contributions": 451691.0
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01079",
@@ -318,35 +63,9 @@
     "individual_contributions": 328866.0,
     "committee_id": "C00921502",
     "top_donors": [],
-    "top_expenditures": [
-      {
-        "recipient": "THE NOVAMETIS CONSULTANCY, LLC",
-        "amount": 27125.0,
-        "description": "ADMINISTRATIVE AND COMPLIANCE SERVICES"
-      },
-      {
-        "recipient": "THE NOVAMETIS CONSULTANCY, LLC",
-        "amount": 19000.0,
-        "description": "ADMINISTRATIVE AND COMPLIANCE SERVICES"
-      },
-      {
-        "recipient": "DANTES PARTNERS",
-        "amount": 13285.71,
-        "description": "RENT"
-      },
-      {
-        "recipient": "LAKE RESEARCH",
-        "amount": 13200.0,
-        "description": "POLLING SERVICES"
-      },
-      {
-        "recipient": "CRESCENDO CREATIVE",
-        "amount": 12618.0,
-        "description": "VIDEO PRODUCTION SERVICES"
-      }
-    ],
-    "dc_contributions": 211910.0,
-    "out_of_dc_contributions": 115706.0
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01137",
@@ -432,35 +151,9 @@
         "type": "INDIVIDUAL"
       }
     ],
-    "top_expenditures": [
-      {
-        "recipient": "SOBKOVIAK, KEVIN",
-        "amount": 5000.0,
-        "description": "FINANCE CONSULTING"
-      },
-      {
-        "recipient": "BUNDY, GERALD",
-        "amount": 4900.0,
-        "description": "SIGNATURE GATHERING"
-      },
-      {
-        "recipient": "EMBASSY SUITES",
-        "amount": 4720.39,
-        "description": "CAMPAIGN EVENT VENUE"
-      },
-      {
-        "recipient": "IKON GLOBAL CONSULTING INC",
-        "amount": 3000.0,
-        "description": "CAMPAIGN CONSULTING"
-      },
-      {
-        "recipient": "IKON GLOBAL CONSULTING INC",
-        "amount": 3000.0,
-        "description": "CAMPAIGN CONSULTING"
-      }
-    ],
-    "dc_contributions": 25855.17,
-    "out_of_dc_contributions": 59500.0
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H0DC00058",
@@ -474,100 +167,10 @@
     "cash_on_hand": 0.0,
     "individual_contributions": 1000.0,
     "committee_id": "C00244335",
-    "top_donors": [
-      {
-        "name": "HOLMES NORTON, ELEANOR",
-        "total": 40000.0,
-        "state": "DC",
-        "employer": "US HOUSE OF REPRESENTATIVES",
-        "type": "CANDIDATE"
-      },
-      {
-        "name": "TRUCKING POLITICAL ACTION COMMITTEE OF THE AMERICAN TRUCKING ASSOCIATIONS INC.",
-        "total": 2500.0,
-        "state": "DC",
-        "employer": "",
-        "type": "POLITICAL ACTION COMMITTEE"
-      },
-      {
-        "name": "AMALGAMATED TRANSIT UNION COPE",
-        "total": 2500.0,
-        "state": "MD",
-        "employer": "",
-        "type": "POLITICAL ACTION COMMITTEE"
-      },
-      {
-        "name": "TRANSPORT INTERMEDIARIES ASSOCIATION'S TIAPAC",
-        "total": 2500.0,
-        "state": "VA",
-        "employer": "",
-        "type": "POLITICAL ACTION COMMITTEE"
-      },
-      {
-        "name": "TRANSPORT WORKERS UNION OF AMERICA POLITICAL CONTRIBUTIONS COMMITTEE",
-        "total": 1500.0,
-        "state": "DC",
-        "employer": "",
-        "type": "POLITICAL ACTION COMMITTEE"
-      },
-      {
-        "name": "UNITED AIRLINES, INC. PAC",
-        "total": 1000.0,
-        "state": "IL",
-        "employer": "",
-        "type": "POLITICAL ACTION COMMITTEE"
-      },
-      {
-        "name": "NATIONAL ASSOCIATION OF REALTORS PAC",
-        "total": 1000.0,
-        "state": "IL",
-        "employer": "",
-        "type": "POLITICAL ACTION COMMITTEE"
-      },
-      {
-        "name": "BAHN, PATRICK R.",
-        "total": 1000.0,
-        "state": "VA",
-        "employer": "TGV ROCKETS",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "VERIZON COMMUNICATIONS, INC. POLITICAL ACTION COMMITTEE (VERIZON PAC)",
-        "total": 1000.0,
-        "state": "DC",
-        "employer": "",
-        "type": "POLITICAL ACTION COMMITTEE"
-      }
-    ],
-    "top_expenditures": [
-      {
-        "recipient": "CAPITOL COMPLIANCE ASSOCIATES, INC.",
-        "amount": 7300.0,
-        "description": "COMPLIANCE SERVICES"
-      },
-      {
-        "recipient": "J. POPE CONSULTING, LLC",
-        "amount": 7203.7,
-        "description": "FUNDRAISING CONSULTING SERVICES"
-      },
-      {
-        "recipient": "J. POPE CONSULTING, LLC",
-        "amount": 7203.7,
-        "description": "FUNDRAISING CONSULTING SERVICES"
-      },
-      {
-        "recipient": "J. POPE CONSULTING, LLC",
-        "amount": 7203.7,
-        "description": "FUNDRAISING CONSULTING SERVICES"
-      },
-      {
-        "recipient": "J. POPE CONSULTING, LLC",
-        "amount": 4703.7,
-        "description": "FUNDRAISING CONSULTING SERVICES"
-      }
-    ],
+    "top_donors": [],
+    "top_expenditures": [],
     "dc_contributions": 0,
-    "out_of_dc_contributions": 1000.0
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01053",
@@ -581,50 +184,10 @@
     "cash_on_hand": 48647.48,
     "individual_contributions": 2700.0,
     "committee_id": "C00918987",
-    "top_donors": [
-      {
-        "name": "MATTHEWS, ROBERT L",
-        "total": 42100.0,
-        "state": "DC",
-        "employer": "THINK OF US",
-        "type": "CANDIDATE"
-      },
-      {
-        "name": "NORRINGTON, BRYAN",
-        "total": 1500.0,
-        "state": "DC",
-        "employer": "USDA",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "HALL, LATISHA",
-        "total": 1000.0,
-        "state": "TN",
-        "employer": "ETRO HEALTH DEPT",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "MYERS, LAMARIOUS",
-        "total": 100.0,
-        "state": "DC",
-        "employer": "THINK OF US",
-        "type": "INDIVIDUAL"
-      }
-    ],
-    "top_expenditures": [
-      {
-        "recipient": "RONTE PHOTOGRAPHY",
-        "amount": 275.0,
-        "description": "PHOTOGRAPHY"
-      },
-      {
-        "recipient": "RONTE PHOTOGRAPHY",
-        "amount": 31.8,
-        "description": "{HOTOGRAPHY"
-      }
-    ],
-    "dc_contributions": 1700.0,
-    "out_of_dc_contributions": 1000.0
+    "top_donors": [],
+    "top_expenditures": [],
+    "dc_contributions": 0,
+    "out_of_dc_contributions": 0
   },
   {
     "candidate_id": "H6DC01103",
@@ -817,31 +380,9 @@
     "cash_on_hand": 5247.8,
     "individual_contributions": 250.0,
     "committee_id": "C00934083",
-    "top_donors": [
-      {
-        "name": "ROSADO, DENISE",
-        "total": 5167.95,
-        "state": "DC",
-        "employer": "DENISE ROSADO PLLC",
-        "type": "CANDIDATE"
-      },
-      {
-        "name": "PHILLIPS, RONALD S",
-        "total": 250.0,
-        "state": "DC",
-        "employer": "",
-        "type": "INDIVIDUAL"
-      },
-      {
-        "name": "TOWNSEND, DESIREE",
-        "total": 0.0,
-        "state": "DC",
-        "employer": "ATTORNEY",
-        "type": "INDIVIDUAL"
-      }
-    ],
+    "top_donors": [],
     "top_expenditures": [],
-    "dc_contributions": 250.0,
+    "dc_contributions": 0,
     "out_of_dc_contributions": 0
   },
   {
