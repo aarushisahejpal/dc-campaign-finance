@@ -150,19 +150,25 @@
 
         .candidate-name {
             font-weight: 600;
+        }
+        .candidate-row {
             cursor: pointer;
+        }
+        .candidate-row:hover { background: #f0f4ff !important; }
+        .expand-hint {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 500;
             color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 3px;
+            padding: 1px 6px;
+            margin-left: 8px;
+            vertical-align: middle;
+            opacity: 0.7;
         }
-        .candidate-name:hover { text-decoration: underline; }
-        .candidate-name::after {
-            content: ' +';
-            font-weight: 400;
-            font-size: 0.75em;
-            color: var(--text-muted);
-        }
-        tr.is-open .candidate-name::after {
-            content: ' −';
-        }
+        .candidate-row:hover .expand-hint { opacity: 1; }
+        tr.is-open .expand-hint { display: none; }
         .party-badge {
             display: inline-block;
             font-size: 0.65rem;
@@ -520,9 +526,9 @@
             }
 
             return `
-                <tr>
+                <tr class="candidate-row" onclick="toggleDetail(${i})">
                     <td>
-                        <span class="candidate-name" onclick="toggleDetail(${i})">${displayName}</span>${partyBadge}
+                        <span class="candidate-name">${displayName}</span>${partyBadge}<span class="expand-hint">donors & spending</span>
                         <div class="committee-name">${c.candidate_name ? c.committee_name : ''}</div>
                     </td>
                     <td class="num">${fmtFull(c.total_raised)}</td>
