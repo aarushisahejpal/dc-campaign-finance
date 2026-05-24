@@ -3,346 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Following the Money — DC 2026 Elections</title>
+    <title>DC 2026 Campaign Finance Tracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Söhne,+Klima:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink: #1a1a1a;
-            --ink-secondary: #4a4a4a;
-            --ink-muted: #8a8a8a;
-            --ink-faint: #b0b0b0;
-            --rule: #d4d4d4;
-            --rule-light: #ebebeb;
-            --paper: #ffffff;
-            --paper-tint: #f8f7f5;
-            --accent: #c41d2e;
-            --accent-muted: #e8d5d7;
-            --blue: #1e5a96;
-            --blue-light: #e6eef6;
-            --green-fe: #1a6b4a;
-            --green-fe-light: #e4f0ea;
-            --amber: #8a6914;
-            --amber-light: #f5f0de;
-            --dem: #2e6cc2;
-            --rep: #c43c3c;
-            --ind: #666;
-            --grn: #2d8a5a;
+            --text: #111;
+            --text-secondary: #555;
+            --text-muted: #888;
+            --border: #e0e0e0;
+            --bg: #fff;
+            --bg-card: #f7f8fa;
+            --accent: #1a56db;
+            --accent-light: #e8eefb;
+            --green: #0d7a3f;
+            --red: #c0392b;
+            --dem: #2563eb;
+            --rep: #dc2626;
+            --ind: #6b7280;
+            --green-party: #16a34a;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--ink);
-            background: var(--paper);
-            line-height: 1.55;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
         }
 
-        .page-width { max-width: 920px; margin: 0 auto; padding: 0 28px; }
+        .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
 
-        /* ═══ MASTHEAD ═══ */
-        .masthead {
-            padding: 52px 0 36px;
-            border-bottom: 3px solid var(--ink);
+        /* ── HEADER ── */
+        header {
+            padding: 48px 0 32px;
+            border-bottom: 1px solid var(--border);
         }
-        .masthead-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 14px;
-        }
-        .masthead h1 {
-            font-family: 'Source Serif 4', Georgia, serif;
-            font-size: 2.6rem;
-            font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            max-width: 640px;
-        }
-        .masthead .lede {
-            font-family: 'Source Serif 4', Georgia, serif;
-            font-size: 1.05rem;
-            font-weight: 300;
-            color: var(--ink-secondary);
-            margin-top: 14px;
-            max-width: 580px;
-            line-height: 1.6;
-        }
-        .masthead .timestamp {
+        header .kicker {
             font-size: 0.72rem;
-            color: var(--ink-muted);
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid var(--rule-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+        header .dek {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            max-width: 600px;
+        }
+        .updated {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 10px;
         }
 
-        /* ═══ RACE PICKER ═══ */
-        .race-picker {
-            padding: 28px 0 20px;
+        /* ── CONTROLS ── */
+        .controls {
+            padding: 24px 0 16px;
             display: flex;
-            align-items: baseline;
-            gap: 14px;
+            gap: 12px;
+            align-items: center;
             flex-wrap: wrap;
         }
-        .race-picker label {
-            font-family: 'Source Serif 4', Georgia, serif;
-            font-size: 1.1rem;
+        .controls label {
+            font-size: 0.8rem;
             font-weight: 600;
-            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
         }
-        .race-picker select {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.92rem;
-            font-weight: 500;
-            padding: 7px 36px 7px 14px;
-            border: 2px solid var(--ink);
-            border-radius: 0;
-            background: var(--paper);
-            color: var(--ink);
+        select {
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 8px 32px 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--text);
             cursor: pointer;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%231a1a1a' viewBox='0 0 16 16'%3E%3Cpath d='M8 12L2 5h12z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 12px center;
+            background-position: right 10px center;
         }
-        .race-picker select:focus {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
+        select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-        /* ═══ RACE CONTEXT ═══ */
-        .race-context {
-            padding: 16px 0 24px;
-            font-size: 0.9rem;
-            color: var(--ink-secondary);
-            line-height: 1.65;
+        /* ── RACE OVERVIEW ── */
+        .race-overview {
+            padding: 18px 0 20px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            border-bottom: 1px solid var(--border);
         }
-        .race-context strong { color: var(--ink); font-weight: 600; }
-
-        /* ═══ TABLE ═══ */
-        .table-header {
-            font-family: 'Source Serif 4', Georgia, serif;
-            font-size: 1.15rem;
+        .race-overview strong {
+            color: var(--text);
             font-weight: 600;
-            padding: 16px 0 12px;
-            border-top: 2px solid var(--ink);
         }
-        .fin-table {
+
+        /* ── CANDIDATE TABLE ── */
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 20px 0 10px;
+            border-bottom: 2px solid var(--text);
+            margin-bottom: 0;
+        }
+        .candidate-table {
             width: 100%;
             border-collapse: collapse;
         }
-        .fin-table thead th {
-            font-size: 0.66rem;
+        .candidate-table th {
+            font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 0.8px;
             text-transform: uppercase;
-            color: var(--ink-muted);
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
             text-align: left;
-            padding: 8px 10px;
-            border-bottom: 1px solid var(--rule);
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border);
         }
-        .fin-table thead th.r { text-align: right; }
-        .fin-table tbody td {
-            padding: 14px 10px;
+        .candidate-table th.num { text-align: right; }
+        .candidate-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f0f0f0;
             font-size: 0.88rem;
             vertical-align: top;
-            border-bottom: 1px solid var(--rule-light);
         }
-        .fin-table tbody td.r {
+        .candidate-table td.num {
             text-align: right;
             font-variant-numeric: tabular-nums;
-            font-weight: 500;
         }
+        .candidate-table tr:hover { background: #fafbfd; }
+        .candidate-table tr.expanded-row { background: var(--bg-card); }
+        .candidate-table tr.expanded-row:hover { background: var(--bg-card); }
 
-        /* Row interaction */
-        .fin-row { cursor: pointer; transition: background 0.1s; }
-        .fin-row:hover { background: var(--paper-tint); }
-        .fin-row.is-open { background: var(--paper-tint); }
-
-        .candidate-label { font-weight: 600; color: var(--ink); }
-        .committee-sub { font-size: 0.76rem; color: var(--ink-muted); margin-top: 2px; }
-
-        .party-pip {
-            display: inline-block;
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            margin-right: 6px;
-            vertical-align: middle;
-            position: relative;
-            top: -1px;
-        }
-        .party-pip.dem { background: var(--dem); }
-        .party-pip.rep { background: var(--rep); }
-        .party-pip.ind { background: var(--ind); }
-        .party-pip.grn { background: var(--grn); }
-        .party-pip.other { background: var(--ink-faint); }
-
-        .tag {
-            display: inline-block;
-            font-size: 0.62rem;
+        .candidate-name {
             font-weight: 600;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            padding: 2px 7px;
-            border-radius: 2px;
         }
-        .tag-fe { background: var(--green-fe-light); color: var(--green-fe); }
-        .tag-fec { background: var(--amber-light); color: var(--amber); }
-        .tag-trad { background: var(--blue-light); color: var(--blue); }
-
-        .explore-cue {
+        .candidate-row {
+            cursor: pointer;
+        }
+        .candidate-row:hover { background: #f0f4ff !important; }
+        .expand-hint {
+            display: inline-block;
             font-size: 0.68rem;
             font-weight: 500;
-            color: var(--ink-faint);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 3px;
+            padding: 1px 6px;
             margin-left: 8px;
-            transition: color 0.15s;
+            vertical-align: middle;
+            opacity: 0.7;
         }
-        .fin-row:hover .explore-cue { color: var(--accent); }
-        .fin-row.is-open .explore-cue { display: none; }
+        .candidate-row:hover .expand-hint { opacity: 1; }
+        tr.is-open .expand-hint { display: none; }
+        .party-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        .party-badge.dem { background: #dbeafe; color: var(--dem); }
+        .party-badge.rep { background: #fee2e2; color: var(--rep); }
+        .party-badge.ind { background: #f3f4f6; color: var(--ind); }
+        .party-badge.green { background: #dcfce7; color: var(--green-party); }
+        .party-badge.other { background: #f3f4f6; color: var(--ind); }
+        .source-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 500;
+            padding: 2px 7px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+        .source-badge.traditional { background: #f0f4ff; color: #3b5998; }
+        .source-badge.fair-elections { background: #ecfdf5; color: #065f46; }
+        .source-badge.fec { background: #fef3c7; color: #92400e; }
+        .committee-name {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
 
-        .money-bar {
-            height: 12px;
-            border-radius: 2px;
-            background: var(--blue);
+        .bar-cell { min-width: 140px; }
+        .bar-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bar {
+            height: 16px;
+            border-radius: 3px;
             min-width: 2px;
-            opacity: 0.65;
-            transition: width 0.25s ease;
+            transition: width 0.3s ease;
         }
-        .bar-track { min-width: 120px; }
+        .bar.raised { background: var(--accent); }
+        .bar.spent { background: var(--red); opacity: 0.7; }
+        .bar-label { font-size: 0.82rem; font-weight: 500; white-space: nowrap; }
 
-        /* ═══ DETAIL PANEL ═══ */
-        .detail-row { display: none; }
-        .detail-row.visible { display: table-row; }
-        .detail-row td { padding: 0 10px 20px; background: var(--paper-tint); border-bottom: 2px solid var(--rule); }
-
-        .detail-inner {
+        /* ── EXPANDED DETAIL ── */
+        .detail-panel {
+            display: none;
+            padding: 16px 8px 20px;
+        }
+        .detail-panel.open { display: block; }
+        .detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px 32px;
-            padding-top: 16px;
+            gap: 16px;
         }
-        .detail-block {}
-        .detail-block h5 {
-            font-size: 0.66rem;
+        .detail-section h4 {
+            font-size: 0.72rem;
             font-weight: 600;
-            letter-spacing: 0.8px;
             text-transform: uppercase;
-            color: var(--ink-muted);
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
             margin-bottom: 8px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid var(--rule);
         }
-        .detail-block.full-width { grid-column: 1 / -1; }
-
-        .d-list { list-style: none; }
-        .d-list li {
+        .detail-list { list-style: none; }
+        .detail-list li {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            padding: 5px 0;
+            padding: 4px 0;
             font-size: 0.82rem;
-            gap: 12px;
+            border-bottom: 1px solid #f0f0f0;
         }
-        .d-list li + li { border-top: 1px solid var(--rule-light); }
-        .d-list .d-name { color: var(--ink); flex: 1; min-width: 0; }
-        .d-list .d-sub { font-size: 0.7rem; color: var(--ink-muted); margin-top: 1px; }
-        .d-list .d-val { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .detail-list li:last-child { border-bottom: none; }
+        .detail-list .name { color: var(--text); max-width: 65%; }
+        .detail-list .amt { font-weight: 500; font-variant-numeric: tabular-nums; }
 
-        /* Geo bar */
-        .geo-strip {
-            display: flex;
-            height: 10px;
-            border-radius: 2px;
-            overflow: hidden;
-            margin: 6px 0 8px;
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 48px;
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
-        .geo-dc { background: var(--blue); }
-        .geo-out { background: var(--rule); }
-        .geo-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.74rem;
-            color: var(--ink-secondary);
-        }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
 
-        /* ═══ METHODOLOGY ═══ */
-        .methodology {
-            margin-top: 56px;
-            padding: 28px 0;
-            border-top: 2px solid var(--ink);
-        }
-        .methodology h4 {
-            font-family: 'Source Serif 4', Georgia, serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .methodology p {
-            font-size: 0.8rem;
-            color: var(--ink-secondary);
-            line-height: 1.7;
-            max-width: 680px;
-        }
-        .methodology p + p { margin-top: 8px; }
-        .methodology a { color: var(--blue); text-decoration: none; border-bottom: 1px solid var(--blue-light); }
-        .methodology a:hover { border-bottom-color: var(--blue); }
-
-        /* ═══ RESPONSIVE ═══ */
-        @media (max-width: 640px) {
-            .masthead h1 { font-size: 1.8rem; }
-            .detail-inner { grid-template-columns: 1fr; }
-            .bar-track { min-width: 80px; }
-            .explore-cue { display: none; }
-            .fin-table thead th:nth-child(4) { display: none; }
-            .fin-table tbody td:nth-child(4) { display: none; }
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.5rem; }
+            .race-overview { grid-template-columns: 1fr 1fr; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .candidate-table { font-size: 0.82rem; }
+            .bar-cell { min-width: 100px; }
         }
     </style>
 </head>
 <body>
-    <div class="page-width">
-
-        <header class="masthead">
-            <div class="masthead-label">DC 2026 Primary &middot; June 16</div>
-            <h1>Following the Money in Washington, D.C.</h1>
-            <p class="lede">The District's campaign finance data is scattered across three separate systems. This tracker combines them into a single view for every race on the ballot.</p>
-            <p class="timestamp" id="updated"></p>
+    <div class="container">
+        <header>
+            <div class="kicker">2026 Election</div>
+            <h1>DC Campaign Finance Tracker</h1>
+            <p class="dek">Contributions and expenditures for the 2026 District of Columbia elections, sourced from the DC Office of Campaign Finance.</p>
+            <p class="updated" id="updated"></p>
         </header>
 
-        <div class="race-picker">
-            <label for="race-select">Browse by race:</label>
+        <div class="controls">
+            <label for="race-select">Race</label>
             <select id="race-select"></select>
         </div>
 
-        <div class="race-context" id="race-overview"></div>
+        <div class="race-overview" id="race-overview"></div>
 
-        <h3 class="table-header" id="table-title">All Committees</h3>
-        <table class="fin-table">
+        <h3 class="section-title" id="table-title">Candidates</h3>
+        <table class="candidate-table">
             <thead>
                 <tr>
-                    <th>Candidate / Committee</th>
-                    <th class="r">Money</th>
-                    <th class="bar-track"></th>
+                    <th>Candidate</th>
+                    <th class="num">Total Money</th>
+                    <th class="bar-cell"></th>
                     <th>Source</th>
                 </tr>
             </thead>
             <tbody id="candidate-body"></tbody>
         </table>
 
-        <footer class="methodology">
-            <h4>About this data</h4>
-            <p>This tracker draws from <strong>three filing systems</strong> that are not otherwise linked: the <a href="https://efiling.ocf.dc.gov/ContributionExpenditure" target="_blank">OCF e-filing portal</a> for traditional candidates, PACs, and independent expenditure committees; the <a href="https://fairelections.ocf.dc.gov" target="_blank">DC Fair Elections Program</a> for publicly financed candidates; and the <a href="https://www.fec.gov" target="_blank">Federal Election Commission</a> for the DC Delegate race.</p>
-            <p>Traditional candidate data reflects filings through the March 10, 2026 R&amp;E report. Fair Elections candidates file monthly; their individual contribution data comes from the Fair Elections public API. FEC data is updated daily via the FEC API. The next major filing deadline is June 10, 2026.</p>
+        <footer>
+            <p>Data from three sources: <a href="https://efiling.ocf.dc.gov/ContributionExpenditure" target="_blank">OCF e-filing</a> (traditional candidates, PACs, IECs), <a href="https://fairelections.ocf.dc.gov" target="_blank">DC Fair Elections Program</a> (publicly financed candidates), and the <a href="https://www.fec.gov" target="_blank">FEC</a> (DC Delegate race). OCF data reflects filings through the March 10, 2026 report; next filing deadline is June 10, 2026. Fair Elections candidates file monthly.</p>
         </footer>
-
     </div>
 
     <script>
     let DATA = null;
 
+    // ── Race groupings for cleaner display ──
     const RACE_ORDER = [
         'All Races',
         'Mayor',
@@ -376,6 +340,7 @@
         },
     };
 
+    // Normalize office names across sources
     function normalizeOffice(c) {
         let o = c.office || '';
         if (o === 'Council Chairman') return 'Council Chairperson';
@@ -383,8 +348,10 @@
         return o;
     }
 
+    // Normalize FEC all-caps names to title case
     function normalizeName(name) {
         if (!name) return '';
+        // If ALL CAPS and has comma (FEC format: "LAST, FIRST"), flip and title-case
         if (name === name.toUpperCase() && name.includes(',')) {
             const parts = name.split(',').map(s => s.trim());
             return parts.reverse().map(s =>
@@ -402,8 +369,8 @@
 
     function fmt(n) {
         if (n >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
-        if (n >= 1000) return '$' + Math.round(n / 1000) + 'K';
-        return '$' + Math.round(n);
+        if (n >= 1000) return '$' + (n / 1000).toFixed(0) + 'K';
+        return '$' + n.toFixed(0);
     }
 
     function fmtFull(n) {
@@ -415,134 +382,169 @@
         const p = party.toLowerCase();
         if (p.includes('democrat')) return 'dem';
         if (p.includes('republican')) return 'rep';
-        if (p.includes('green') || p.includes('statehood')) return 'grn';
+        if (p.includes('green') || p.includes('statehood')) return 'green';
         if (p.includes('independent')) return 'ind';
         return 'other';
     }
 
-    function sourceTag(c) {
-        const ft = c.filer_type || '';
-        if (ft === 'Fair Elections') return '<span class="tag tag-fe">Fair Elections</span>';
-        if (ft === 'FEC') return '<span class="tag tag-fec">FEC</span>';
-        if (ft === 'Independent Expenditure Committee') return '<span class="tag tag-trad">IEC</span>';
-        if (ft === 'Initiative' || ft === 'Recall') return '<span class="tag tag-trad">' + ft + '</span>';
-        if (ft === 'Political Action Committee') return '<span class="tag tag-trad">PAC</span>';
-        return '<span class="tag tag-trad">OCF</span>';
+    function partyLabel(party) {
+        if (!party) return '';
+        const p = party.toLowerCase();
+        if (p.includes('democrat')) return 'D';
+        if (p.includes('republican')) return 'R';
+        if (p.includes('green') || p.includes('statehood')) return 'G';
+        if (p.includes('independent')) return 'I';
+        return party.charAt(0);
     }
 
     function renderOverview(committees) {
         const el = document.getElementById('race-overview');
         const totalRaised = committees.reduce((s, c) => s + c.total_raised, 0);
         const totalSpent = committees.reduce((s, c) => s + c.total_spent, 0);
-        const n = committees.length;
-        el.innerHTML = `<strong>${n} committees</strong> have reported <strong>${fmtFull(totalRaised)}</strong> raised and <strong>${fmtFull(totalSpent)}</strong> spent.`;
+        const numCommittees = committees.length;
+
+        let text = `<strong>${numCommittees} committees</strong> have reported <strong>${fmtFull(totalRaised)}</strong> raised and <strong>${fmtFull(totalSpent)}</strong> spent.`;
+        el.innerHTML = text;
+    }
+
+    function sourceLabel(c) {
+        const ft = c.filer_type || '';
+        if (ft === 'Fair Elections') return '<span class="source-badge fair-elections">Fair Elections</span>';
+        if (ft === 'FEC') return '<span class="source-badge fec">FEC</span>';
+        if (ft === 'Independent Expenditure Committee') return '<span class="source-badge traditional">IEC</span>';
+        if (ft === 'Initiative' || ft === 'Recall') return '<span class="source-badge traditional">' + ft + '</span>';
+        if (ft === 'Political Action Committee') return '<span class="source-badge traditional">PAC</span>';
+        return '<span class="source-badge traditional">Traditional</span>';
     }
 
     function renderTable(committees) {
         const body = document.getElementById('candidate-body');
         const maxMoney = Math.max(...committees.map(c => c.total_raised), 1);
+
         const sorted = [...committees].sort((a, b) => b.total_raised - a.total_raised);
 
         body.innerHTML = sorted.map((c, i) => {
             const displayName = normalizeName(c.candidate_name) || c.committee_name;
             const pct = (c.total_raised / maxMoney * 100).toFixed(1);
+            const pl = partyLabel(c.party);
             const pc = partyClass(c.party);
-            const pip = c.party ? `<span class="party-pip ${pc}"></span>` : '';
+            const partyBadge = pl ? `<span class="party-badge ${pc}">${pl}</span>` : '';
 
-            // ── Build detail panel ──
+            // Build detail section based on source
+            let detailHTML = '';
+
+            // DC vs Out-of-DC bar (shown for all sources that have it)
             const dcAmt = c.dc_contributions || 0;
             const outAmt = c.out_of_dc_contributions || 0;
             const geoTotal = dcAmt + outAmt;
-            const dcPct = geoTotal > 0 ? Math.round(dcAmt / geoTotal * 100) : 0;
-            const geoBlock = geoTotal > 0 ? `
-                <div class="detail-block full-width">
-                    <h5>Geography of contributions</h5>
-                    <div class="geo-strip">
-                        <div class="geo-dc" style="width:${dcPct}%"></div>
-                        <div class="geo-out" style="width:${100 - dcPct}%"></div>
+            const dcPctGeo = geoTotal > 0 ? (dcAmt / geoTotal * 100).toFixed(0) : 0;
+            const geoBar = geoTotal > 0 ? `
+                <div class="detail-section" style="grid-column: 1 / -1">
+                    <h4>Where contributions come from</h4>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                        <div style="flex:1;height:14px;border-radius:3px;overflow:hidden;display:flex;background:#f0f0f0">
+                            <div style="width:${dcPctGeo}%;background:#1a56db;border-radius:3px 0 0 3px"></div>
+                            <div style="width:${100-dcPctGeo}%;background:#94a3b8"></div>
+                        </div>
                     </div>
-                    <div class="geo-labels">
-                        <span>DC residents: ${fmtFull(dcAmt)} (${dcPct}%)</span>
-                        <span>Outside DC: ${fmtFull(outAmt)} (${100 - dcPct}%)</span>
+                    <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#555">
+                        <span>DC: ${fmtFull(dcAmt)} (${dcPctGeo}%)</span>
+                        <span>Outside DC: ${fmtFull(outAmt)} (${100-dcPctGeo}%)</span>
                     </div>
                 </div>
             ` : '';
 
-            const donorBlock = (c.top_donors || []).length > 0 ? `
-                <div class="detail-block">
-                    <h5>Top donors</h5>
-                    <ul class="d-list">
+            // Top donors (shown for OCF traditional, Fair Elections, and FEC)
+            const donorList = (c.top_donors || []).length > 0 ? `
+                <div class="detail-section">
+                    <h4>Top Donors</h4>
+                    <ul class="detail-list">
                         ${c.top_donors.map(d => {
-                            const meta = [d.type, d.state, d.employer].filter(Boolean).join(' · ');
-                            const sub = meta ? `<div class="d-sub">${meta}</div>` : '';
-                            return `<li><span class="d-name">${d.name}${sub}</span><span class="d-val">${fmtFull(d.total)}</span></li>`;
+                            const parts = [d.type, d.state, d.employer].filter(Boolean);
+                            const sub = parts.join(' · ');
+                            const subLine = sub ? `<div style="font-size:0.72rem;color:#999;margin-top:1px">${sub}</div>` : '';
+                            return `<li><span class="name">${d.name}${subLine}</span><span class="amt">${fmtFull(d.total)}</span></li>`;
                         }).join('')}
                     </ul>
                 </div>
             ` : '';
 
-            const spendBlock = (c.spending_by_purpose || []).length > 0 ? `
-                <div class="detail-block">
-                    <h5>Spending</h5>
-                    <ul class="d-list">
-                        ${c.spending_by_purpose.slice(0, 6).map(s => `
-                            <li><span class="d-name">${s.purpose}</span><span class="d-val">${fmtFull(s.total)}</span></li>
+            // Spending (shown for all with data)
+            const spendList = (c.spending_by_purpose || []).length > 0 ? `
+                <div class="detail-section">
+                    <h4>Spending</h4>
+                    <ul class="detail-list">
+                        ${c.spending_by_purpose.slice(0, 5).map(s => `
+                            <li><span class="name">${s.purpose}</span><span class="amt">${fmtFull(s.total)}</span></li>
                         `).join('')}
                     </ul>
                 </div>
             ` : '';
 
-            let sourceBlock = '';
             if (c.filer_type === 'Fair Elections') {
                 const base = c.base_payment || 0;
                 const matching = c.matching_payment || 0;
                 const indiv = c.individual_raised || 0;
+                const pub = c.public_funds || 0;
                 const numDonors = c.num_individual_donors || 0;
                 const status = c.certification_status || '';
-                sourceBlock = `
-                    <div class="detail-block">
-                        <h5>Funding breakdown</h5>
-                        <ul class="d-list">
-                            <li><span class="d-name">Individual contributions<div class="d-sub">${numDonors.toLocaleString()} donors</div></span><span class="d-val">${fmtFull(indiv)}</span></li>
-                            <li><span class="d-name">Public financing — base</span><span class="d-val">${fmtFull(base)}</span></li>
-                            <li><span class="d-name">Public financing — 5:1 match</span><span class="d-val">${fmtFull(matching)}</span></li>
+                detailHTML = `
+                    <div class="detail-section">
+                        <h4>Money In</h4>
+                        <ul class="detail-list">
+                            <li><span class="name">Individual contributions (${numDonors.toLocaleString()} donors)</span><span class="amt">${fmtFull(indiv)}</span></li>
+                            <li><span class="name">Public financing — base payment</span><span class="amt">${fmtFull(base)}</span></li>
+                            <li><span class="name">Public financing — 5:1 match</span><span class="amt">${fmtFull(matching)}</span></li>
+                            <li><span class="name">Certification: ${status}</span><span class="amt"></span></li>
                         </ul>
-                        <div class="d-sub" style="margin-top:8px">Certification: ${status}</div>
                     </div>
+                    ${donorList}
+                    ${geoBar}
+                    ${spendList}
                 `;
             } else if (c.filer_type === 'FEC') {
                 const coh = c.cash_on_hand || 0;
-                sourceBlock = `
-                    <div class="detail-block">
-                        <h5>FEC summary</h5>
-                        <ul class="d-list">
-                            <li><span class="d-name">Total raised</span><span class="d-val">${fmtFull(c.total_raised)}</span></li>
-                            <li><span class="d-name">Total spent</span><span class="d-val">${fmtFull(c.total_spent)}</span></li>
-                            <li><span class="d-name">Cash on hand</span><span class="d-val">${fmtFull(coh)}</span></li>
+                detailHTML = `
+                    <div class="detail-section">
+                        <h4>FEC Filings</h4>
+                        <ul class="detail-list">
+                            <li><span class="name">Total raised</span><span class="amt">${fmtFull(c.total_raised)}</span></li>
+                            <li><span class="name">Total spent</span><span class="amt">${fmtFull(c.total_spent)}</span></li>
+                            <li><span class="name">Cash on hand</span><span class="amt">${fmtFull(coh)}</span></li>
                         </ul>
                     </div>
+                    ${donorList}
+                    ${geoBar}
+                    ${spendList}
+                `;
+            } else {
+                detailHTML = `
+                    ${donorList || '<div class="detail-section"><h4>Top Donors</h4><ul class="detail-list"><li><span class="name">No contributions reported</span></li></ul></div>'}
+                    ${geoBar}
+                    ${spendList || '<div class="detail-section"><h4>Spending</h4><ul class="detail-list"><li><span class="name">No expenditures reported</span></li></ul></div>'}
                 `;
             }
 
-            const detailContent = sourceBlock + donorBlock + geoBlock + spendBlock;
-            const hasDetail = detailContent.trim().length > 0;
-
             return `
-                <tr class="fin-row${hasDetail ? '' : ' no-detail'}" ${hasDetail ? `onclick="toggleDetail(${i})"` : ''}>
+                <tr class="candidate-row" onclick="toggleDetail(${i})">
                     <td>
-                        ${pip}<span class="candidate-label">${displayName}</span>${hasDetail ? '<span class="explore-cue">&#x25B8; details</span>' : ''}
-                        <div class="committee-sub">${c.candidate_name ? c.committee_name : ''}</div>
+                        <span class="candidate-name">${displayName}</span>${partyBadge}<span class="expand-hint">donors & spending</span>
+                        <div class="committee-name">${c.candidate_name ? c.committee_name : ''}</div>
                     </td>
-                    <td class="r">${fmtFull(c.total_raised)}</td>
-                    <td class="bar-track">
-                        <div class="money-bar" style="width:${pct}%"></div>
+                    <td class="num">${fmtFull(c.total_raised)}</td>
+                    <td class="bar-cell">
+                        <div class="bar-wrapper">
+                            <div class="bar raised" style="width:${pct}%"></div>
+                        </div>
                     </td>
-                    <td>${sourceTag(c)}</td>
+                    <td>${sourceLabel(c)}</td>
                 </tr>
-                <tr class="detail-row" id="detail-row-${i}">
+                <tr class="expanded-row" id="detail-row-${i}" style="display:none">
                     <td colspan="4">
-                        <div class="detail-inner">
-                            ${detailContent || '<p style="color:var(--ink-muted);font-size:0.84rem">No financial detail reported.</p>'}
+                        <div class="detail-panel open">
+                            <div class="detail-grid">
+                                ${detailHTML}
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -553,27 +555,40 @@
     function toggleDetail(idx) {
         const row = document.getElementById(`detail-row-${idx}`);
         const mainRow = row.previousElementSibling;
-        const opening = !row.classList.contains('visible');
-        row.classList.toggle('visible', opening);
-        mainRow.classList.toggle('is-open', opening);
+        const isOpen = row.style.display !== 'none';
+        row.style.display = isOpen ? 'none' : 'table-row';
+        mainRow.classList.toggle('is-open', !isOpen);
     }
 
     function onRaceChange() {
         const race = document.getElementById('race-select').value;
         const committees = getCommitteesForRace(race);
-        document.getElementById('table-title').textContent = race === 'All Races' ? 'All Committees' : race;
+        const title = document.getElementById('table-title');
+        title.textContent = race === 'All Races' ? 'All Committees' : race;
         renderOverview(committees);
         renderTable(committees);
     }
 
     function init(data) {
         DATA = data;
-        DATA.committees.forEach(c => { if (!c.filer_type) c.filer_type = ''; });
 
+        // Attach filer_type to committees from the committee name
+        const registry = {};
+        // We need filer_type info - add it from the lookup
+        // The site_data doesn't have filer_type per committee, let's use the office + registry
+        // For now, tag IECs and Initiatives by checking if they have "No Office" and specific patterns
+        DATA.committees.forEach(c => {
+            // Infer filer_type from office and committee patterns
+            if (!c.filer_type) c.filer_type = '';
+        });
+
+        // Updated timestamp
         if (data.metadata && data.metadata.last_updated) {
-            document.getElementById('updated').textContent = 'Data updated ' + data.metadata.last_updated;
+            document.getElementById('updated').textContent =
+                'Last updated: ' + data.metadata.last_updated;
         }
 
+        // Build race dropdown
         const select = document.getElementById('race-select');
         const availableRaces = new Set();
         DATA.committees.forEach(c => {
@@ -581,8 +596,14 @@
             if (norm) availableRaces.add(norm);
         });
 
+        // Add grouped races
         RACE_ORDER.forEach(race => {
-            if (race === 'All Races' || RACE_GROUPS[race] || availableRaces.has(race)) {
+            if (race === 'All Races' || RACE_GROUPS[race]) {
+                const opt = document.createElement('option');
+                opt.value = race;
+                opt.textContent = race;
+                select.appendChild(opt);
+            } else if (availableRaces.has(race)) {
                 const opt = document.createElement('option');
                 opt.value = race;
                 opt.textContent = race;
@@ -594,6 +615,7 @@
         onRaceChange();
     }
 
+    // Load data from GitHub raw (auto-updating) with local fallback
     const GITHUB_DATA = 'https://raw.githubusercontent.com/aarushisahejpal/dc-campaign-finance/main/data/site_data.json';
     const LOCAL_DATA = 'data/site_data.json';
 
@@ -604,7 +626,7 @@
         .catch(e => {
             console.error('Failed to load data:', e);
             document.getElementById('candidate-body').innerHTML =
-                '<tr><td colspan="4" style="padding:24px;color:var(--ink-muted)">Failed to load data.</td></tr>';
+                '<tr><td colspan="5">Failed to load data. Run the scraper first.</td></tr>';
         });
     </script>
 </body>
